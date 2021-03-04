@@ -1,0 +1,10 @@
+bin/
+obj/
+packages/
+.nuget/
+.vs/
+*.bak
+*.lnk
+*.suo
+*.user
+licenses.licx
