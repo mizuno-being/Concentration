@@ -45,11 +45,12 @@ namespace Concentration {
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(15);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(730, 761);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(728, 759);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // splitContainer1
             // 
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
@@ -126,7 +127,7 @@ namespace Concentration {
             this.ClientSize = new System.Drawing.Size(984, 761);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Concentration-シンケイスイジャク-";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.Form1_Click);
             this.splitContainer1.Panel1.ResumeLayout(false);
