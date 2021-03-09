@@ -47,9 +47,9 @@ namespace Concentration {
             return Deck;
         }
 
-
-
-       
+        /// <summary>
+        /// 配置
+        /// </summary>
 
     }
 }
