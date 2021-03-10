@@ -17,7 +17,7 @@ namespace Concentration {
 
             for (int s = 0; s < 4; s++) {
                 for (int r = 1; r < 14; r++) {
-                    wDeck.Add( new Card { Suit = s, Rank = r, Obverse = false });
+                    wDeck.Add( new Card { Suit = s, Rank = r, IsObverse = false });
                 }
             }
             return wDeck;
@@ -27,24 +27,24 @@ namespace Concentration {
         /// <summary>
         /// シャッフル
         /// </summary>
-        /// <param name="Deck"></param>
+        /// <param name="vDeck"></param>
         /// <returns></returns>
-        public List<Card> Shuffle(List<Card> Deck) {
+        public List<Card> Shuffle(List<Card> vDeck) {
 
             Random wRandom = new Random();
 
-            int x = Deck.Count;
+            int x = vDeck.Count;
 
             while (x > 1) {
                 x--;
                 int y = wRandom.Next(x + 1);
-                Card z = Deck[y];
-                Deck[y] = Deck[x];
-                Deck[x] = z;
+                Card z = vDeck[y];
+                vDeck[y] = vDeck[x];
+                vDeck[x] = z;
             }
 
             //List<Card> wShuffleDeck = Deck.OrderBy(x => Guid.NewGuid()).ToList();
-            return Deck;
+            return vDeck;
         }
 
         /// <summary>

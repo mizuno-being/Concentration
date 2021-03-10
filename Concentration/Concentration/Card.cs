@@ -25,6 +25,6 @@ namespace Concentration {
         /// 表(数字とスートの面):true
         /// 裏:false
         /// </summary>
-        public bool Obverse { get; set; }
+        public bool IsObverse { get; set; }
     }
 }

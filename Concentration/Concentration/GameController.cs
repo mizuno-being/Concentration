@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 namespace Concentration {
     public class GameController {
 
+        public Game FGame;
+        public Trump FTrump;
+        public Player FPlayer;
+
+
+
         //(input)プレイヤー数を受け取る
         //(input)プレイヤー名を受け取る
         //(model)プレイヤー数だけPlayerインスタンスを作成

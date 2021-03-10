@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Concentration {
-    class Player {
+    public class Player {
 
         /// <summary>
         /// プレイヤー番号
         /// </summary>
-        public int Number { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// プレイヤー名
