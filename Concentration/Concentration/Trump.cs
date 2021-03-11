@@ -7,20 +7,22 @@ using System.Threading.Tasks;
 namespace Concentration {
     public class Trump {
 
+        public List<Card> FDeck;
+
         /// <summary>
         /// カード52枚でデッキ作成
         /// </summary>
         /// <returns></returns>
         public List<Card> MakeDeck() {
 
-            List<Card> wDeck = new List<Card>();
+            //List<Card> wDeck = new List<Card>();
 
             for (int s = 0; s < 4; s++) {
                 for (int r = 1; r < 14; r++) {
-                    wDeck.Add( new Card { Suit = s, Rank = r, IsObverse = false });
+                    FDeck.Add( new Card { Suit = s, Rank = r, IsObverse = false });
                 }
             }
-            return wDeck;
+            return FDeck;
         }
 
 

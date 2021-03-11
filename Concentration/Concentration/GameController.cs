@@ -9,14 +9,14 @@ namespace Concentration {
 
         public Game FGame;
         public Trump FTrump;
-        public Player FPlayer;
-
-
+        
 
         //(input)プレイヤー数を受け取る
         //(input)プレイヤー名を受け取る
         //(model)プレイヤー数だけPlayerインスタンスを作成
+
         //(model)プレイヤー名を各Player.Nameにセット
+        
         //(view) プレイヤー数を渡す
         //(view) それぞれのプレイヤー名を渡す
 
