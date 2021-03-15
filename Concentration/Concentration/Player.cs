@@ -22,4 +22,5 @@ namespace Concentration {
         /// </summary>
         public int OwnCards { get; set; }
     }
+
 }

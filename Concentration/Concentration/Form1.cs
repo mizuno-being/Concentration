@@ -11,12 +11,27 @@ using System.Windows.Forms;
 namespace Concentration {
     public partial class Form1 : Form {
 
+        //public GameController FGameController;
+
+        /// <summary>
+        /// トランプカードを表示するボタン
+        /// </summary>
         private Button[] FCardButtons;
+        /// <summary>
+        /// プレイヤー名を表示するラベル
+        /// </summary>
         private Label[] FPlayerNameLabels;
+        /// <summary>
+        /// 取得枚数を表示するテキストボックス
+        /// </summary>
         private TextBox[] FCardNumTextBoxes;
+        /// <summary>
+        /// 単位(枚)を表示するラベル
+        /// </summary>
         private Label[] FUnitLabels;
 
-        private int FPlayerNum = 4;
+        private int FPlayerNum = 2;
+
 
         public Form1() {
             InitializeComponent();

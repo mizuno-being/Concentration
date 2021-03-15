@@ -19,20 +19,23 @@ namespace Concentration {
         public bool CheckMatchFlag { get; set; }
 
         //カードをめくる OpenCard
-        public void OpenCard(bool vObverse) {
+        public bool OpenCard(bool vObverse) {
             //クリックされたカードのObverseをtrueにする
+            return true;
         }
 
         //一致判定 CheckMatchCards
         public bool CheckMatchCards(Card vFirstCard, Card vSecondCard) {
             //同じ数字だった場合trueを返す
             //違う数字だった場合falseを返す
+            return false;
         }
 
         //カードを裏返す
         public bool CloseCard(bool vObverse) {
             //一致判定がfalseの場合
             //  少し待ってからCardのObverseをfalseに
+            return false;
         }
 
         //ゲーム終了判定 JudgeGameEnd
@@ -40,6 +43,7 @@ namespace Concentration {
             //一致判定がtrueの場合
             //  全てのCardのObverseがtrue
             //      ゲーム終了フラグをtrueにする
+            return false;
         }
     }
 }
