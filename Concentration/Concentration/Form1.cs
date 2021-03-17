@@ -11,12 +11,12 @@ using System.Windows.Forms;
 namespace Concentration {
     public partial class Form1 : Form {
 
-        //public GameController FGameController;
+        public GameController FGameController;
 
         /// <summary>
         /// トランプカードを表示するボタン
         /// </summary>
-        private Button[] FCardButtons;
+        public Button[] FCardButtons;
         /// <summary>
         /// プレイヤー名を表示するラベル
         /// </summary>
@@ -24,49 +24,86 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数を表示するテキストボックス
         /// </summary>
-        private TextBox[] FCardNumTextBoxes;
+        public TextBox[] FCardNumTextBoxes;
         /// <summary>
         /// 単位(枚)を表示するラベル
         /// </summary>
         private Label[] FUnitLabels;
 
-        private int FPlayerNum = 2;
+
+        public int FPlayerNum;
+        public int FTrumpCardNum = GameController.FSuit * GameController.FRank;
+
+        public void GetPlayterNum(int vPlayerNum) {
+            FPlayerNum = vPlayerNum;
+        }
+
+        public void Reflesh(List<Card> vCards) {
+            for (int i = 0; i < vCards.Count; i++) {
+                if (vCards[i].IsObverse) {
+                    string wSuit = "♥";
+                    if (vCards[i].Suit == 0) {
+                        wSuit = "♠";
+                    }
+                    if (vCards[i].Suit == 1) {
+                        wSuit = "♦";
+                    }
+                    if (vCards[i].Suit == 2) {
+                        wSuit = "♣";
+                    }
+                    this.FCardButtons[i].Text = $"{wSuit}{vCards[i].Rank}";
+                } else {
+                    this.FCardButtons[i].Text = "裏";
+                }
+            }
+        }
 
 
         public Form1() {
             InitializeComponent();
+            FGameController = new GameController(this);
         }
 
         private void Form1_Click(object sender, EventArgs e) {
 
         }
 
-        private void Button_Click(object sender, EventArgs e) {
-
+        public void Button_Click(object sender, EventArgs e) {
+            int wChoiceCardNum = (int)((Button)sender).Tag;
+            FGameController.OpenCard(wChoiceCardNum);
+            Reflesh(FGameController.FTrump.FDeck);
         }
 
         private void Form1_Load(object sender, EventArgs e) {
+
+
 
             ///トランプを52枚表示
             if (this.FCardButtons != null) {
                 return;
             }
 
-            this.FCardButtons = new Button[52];
+
+            this.FCardButtons = new Button[FTrumpCardNum];
 
             for (int i = 0; i < this.FCardButtons.Length; i++) {
                 this.FCardButtons[i] = new Button();
 
                 this.FCardButtons[i].BackColor = SystemColors.ButtonShadow;
-                this.FCardButtons[i].Font = new Font("Yu Gothic UI", 59F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
+                this.FCardButtons[i].Font = new Font("Yu Gothic UI", 25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
                 this.FCardButtons[i].Location = new Point(77, 3);
                 this.FCardButtons[i].Name = "Card" + i;
+                this.FCardButtons[i].Tag = i;
                 this.FCardButtons[i].Size = new Size(68, 100);
                 this.FCardButtons[i].TabIndex = 0;
-                this.FCardButtons[i].Text = char.ConvertFromUtf32(127136);
+                this.FCardButtons[i].Text = "裏";
+                //this.FCardButtons[i].Text = char.ConvertFromUtf32(127136);
                 this.FCardButtons[i].TextAlign = ContentAlignment.TopRight;
                 this.FCardButtons[i].UseVisualStyleBackColor = false;
                 this.FCardButtons[i].Click += Button_Click;
+
+
+
 
                 this.flowLayoutPanel1.Controls.Add(this.FCardButtons[i]);
             }
@@ -75,9 +112,12 @@ namespace Concentration {
                 return;
             }
 
+            GetPlayterNum(FGameController.FPlayerNum);
+
             this.FPlayerNameLabels = new Label[FPlayerNum];
             this.FCardNumTextBoxes = new TextBox[FPlayerNum];
             this.FUnitLabels = new Label[FPlayerNum];
+
 
             for (int i = 0; i < FPlayerNum; i++) {
                 this.FPlayerNameLabels[i] = new Label();

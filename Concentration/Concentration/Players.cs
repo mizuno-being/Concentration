@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Concentration {
     public class Players {
 
-        //public List<Player> FPlayers;
+        public List<Player> FPlayers;
 
         /// <summary>
         /// 誰の手番か
@@ -18,24 +18,22 @@ namespace Concentration {
         /// プレイヤー数だけPlayerインスタンスを作成
         /// </summary>
         /// <param name="vPlayerNum"></param>
-        public List<Player> MakePlayers(int vPlayerNum) {
-            List<Player> wPlayers = new List<Player>();
+        public void MakePlayers(int vPlayerNum) {
+            FPlayers = new List<Player>();
             for (int i = 1; i <= vPlayerNum; i++) {
-                wPlayers.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCards = 0 });
+                FPlayers.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCards = 0 });
             }
-                return wPlayers;
         }
 
         /// <summary>
         /// 入力された各プレイヤー名を各Player.Nameにセット
         /// </summary>
         /// <param name="vNames"></param>
-        public List<Player> SetPlayersName(List<Player> vPlayers, List<string> vNames) {
+        public void SetPlayersName(List<string> vNames) {
             if (vNames.Count > 0)
                 for (int i = 0; i < vNames.Count; i++) {
-                    vPlayers[i].Name = vNames[i];
+                    FPlayers[i].Name = vNames[i];
                 }
-            return vPlayers;
         }
 
         //手番を次に回す NextTurn
@@ -49,7 +47,7 @@ namespace Concentration {
         }
 
         //勝者判定 JudgeWinner
-        public List<Player> JudgeWinner(Players vPlayers) {
+        public List<Player> JudgeWinner() {
             //ゲーム終了フラグtrue時に判定
             //  同率が3人いる場合
             //      同率が2人いる場合

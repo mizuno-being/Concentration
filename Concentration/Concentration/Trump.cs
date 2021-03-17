@@ -7,46 +7,40 @@ using System.Threading.Tasks;
 namespace Concentration {
     public class Trump {
 
-        //public List<Card> FDeck;
+        public List<Card> FDeck;
 
         /// <summary>
         /// カード52枚でデッキ作成
         /// </summary>
         /// <returns></returns>
-        public List<Card> MakeDeck() {
-
-            List<Card> wDeck = new List<Card>();
-
-            for (int s = 0; s < 4; s++) {
-                for (int r = 1; r < 14; r++) {
-                    wDeck.Add( new Card { Suit = s, Rank = r, IsObverse = false });
+        public void MakeDeck(int vSuit, int vRank) {
+            FDeck = new List<Card>();
+            for (int s = 0; s < vSuit; s++) {
+                for (int r = 1; r < vRank+1; r++) {
+                    FDeck.Add( new Card { Suit = s, Rank = r, IsObverse = false });
                 }
             }
-            return wDeck;
         }
-
 
         /// <summary>
         /// シャッフル
         /// </summary>
-        /// <param name="vDeck"></param>
         /// <returns></returns>
-        public List<Card> Shuffle(List<Card> vDeck) {
+        public void Shuffle() {
 
             Random wRandom = new Random();
 
-            int x = vDeck.Count;
+            int x = FDeck.Count;
 
             while (x > 1) {
                 x--;
                 int y = wRandom.Next(x + 1);
-                Card z = vDeck[y];
-                vDeck[y] = vDeck[x];
-                vDeck[x] = z;
+                Card z = FDeck[y];
+                FDeck[y] = FDeck[x];
+                FDeck[x] = z;
             }
 
             //List<Card> wShuffleDeck = Deck.OrderBy(x => Guid.NewGuid()).ToList();
-            return vDeck;
         }
 
         /// <summary>
