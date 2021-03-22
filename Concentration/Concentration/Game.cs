@@ -2,40 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Concentration {
     public class Game {
 
 
+
         /// <summary>
         /// ゲーム終了フラグ
         /// </summary>
-        public bool GameEndFlag { get; set; }
-        
+        public bool GameEnd { get; set; }
+
         /// <summary>
         /// 一致判定フラグ
         /// </summary>
-        public bool CheckMatchFlag { get; set; }
+        public bool CheckMatch { get; set; }
 
         //カードをめくる OpenCard
-        public bool OpenCard(bool vObverse) {
+        public bool OpenCard(bool vObverse) => true;
             //クリックされたカードのObverseをtrueにする
-            return true;
-        }
+            
 
         //一致判定 CheckMatchCards
         public bool CheckMatchCards(Card vFirstCard, Card vSecondCard) {
-            //同じ数字だった場合trueを返す
-            //違う数字だった場合falseを返す
+            if (vFirstCard.Rank == vSecondCard.Rank) {
+                return true;
+            }
             return false;
         }
 
         //カードを裏返す
-        public bool CloseCard(bool vObverse) {
-            //一致判定がfalseの場合
-            //  少し待ってからCardのObverseをfalseに
-            return false;
+        public bool CloseCard(Card vCard) {
+            //Thread.Sleep(500);
+            return vCard.IsObverse = false;
         }
 
         //ゲーム終了判定 JudgeGameEnd

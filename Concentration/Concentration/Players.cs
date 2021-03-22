@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 namespace Concentration {
     public class Players {
 
-        public List<Player> FPlayers;
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<Player> PlayersList { get; set; }
 
         /// <summary>
         /// 誰の手番か
@@ -19,9 +22,9 @@ namespace Concentration {
         /// </summary>
         /// <param name="vPlayerNum"></param>
         public void MakePlayers(int vPlayerNum) {
-            FPlayers = new List<Player>();
+            PlayersList = new List<Player>();
             for (int i = 1; i <= vPlayerNum; i++) {
-                FPlayers.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCards = 0 });
+                PlayersList.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCards = 0 });
             }
         }
 
@@ -32,7 +35,7 @@ namespace Concentration {
         public void SetPlayersName(List<string> vNames) {
             if (vNames.Count > 0)
                 for (int i = 0; i < vNames.Count; i++) {
-                    FPlayers[i].Name = vNames[i];
+                    PlayersList[i].Name = vNames[i];
                 }
         }
 

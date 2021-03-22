@@ -5,13 +5,14 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Concentration {
     public partial class Form1 : Form {
 
-        public GameController FGameController;
+        private GameController FGameController;
 
         /// <summary>
         /// トランプカードを表示するボタン
@@ -32,7 +33,7 @@ namespace Concentration {
 
 
         public int FPlayerNum;
-        public int FTrumpCardNum = GameController.FSuit * GameController.FRank;
+        public int FTrumpCardNum = GameController.C_Suit * GameController.C_Rank;
 
         public void GetPlayterNum(int vPlayerNum) {
             FPlayerNum = vPlayerNum;
@@ -40,7 +41,7 @@ namespace Concentration {
 
         public void Reflesh(List<Card> vCards) {
             for (int i = 0; i < vCards.Count; i++) {
-                if (vCards[i].IsObverse) {
+                if (vCards[i].IsObverse == true) {
                     string wSuit = "♥";
                     if (vCards[i].Suit == 0) {
                         wSuit = "♠";
@@ -53,7 +54,7 @@ namespace Concentration {
                     }
                     this.FCardButtons[i].Text = $"{wSuit}{vCards[i].Rank}";
                 } else {
-                    this.FCardButtons[i].Text = "裏";
+                    this.FCardButtons[i].Text = "";
                 }
             }
         }
@@ -71,18 +72,17 @@ namespace Concentration {
         public void Button_Click(object sender, EventArgs e) {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
-            Reflesh(FGameController.FTrump.FDeck);
+            Reflesh(FGameController.FTrump.Deck);
+            FGameController.CheckMatchCards();
+            Reflesh(FGameController.FTrump.Deck);
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-
-
 
             ///トランプを52枚表示
             if (this.FCardButtons != null) {
                 return;
             }
-
 
             this.FCardButtons = new Button[FTrumpCardNum];
 
@@ -96,14 +96,11 @@ namespace Concentration {
                 this.FCardButtons[i].Tag = i;
                 this.FCardButtons[i].Size = new Size(68, 100);
                 this.FCardButtons[i].TabIndex = 0;
-                this.FCardButtons[i].Text = "裏";
+                this.FCardButtons[i].Text = "";
                 //this.FCardButtons[i].Text = char.ConvertFromUtf32(127136);
                 this.FCardButtons[i].TextAlign = ContentAlignment.TopRight;
                 this.FCardButtons[i].UseVisualStyleBackColor = false;
                 this.FCardButtons[i].Click += Button_Click;
-
-
-
 
                 this.flowLayoutPanel1.Controls.Add(this.FCardButtons[i]);
             }
@@ -118,12 +115,10 @@ namespace Concentration {
             this.FCardNumTextBoxes = new TextBox[FPlayerNum];
             this.FUnitLabels = new Label[FPlayerNum];
 
-
             for (int i = 0; i < FPlayerNum; i++) {
                 this.FPlayerNameLabels[i] = new Label();
                 this.FCardNumTextBoxes[i] = new TextBox();
                 this.FUnitLabels[i] = new Label();
-
 
                 // 
                 // プレイヤー名
@@ -157,7 +152,6 @@ namespace Concentration {
                 this.FUnitLabels[i].Size = new Size(31, 25);
                 this.FUnitLabels[i].TabIndex = 1;
                 this.FUnitLabels[i].Text = "枚";
-
 
                 this.splitContainer1.Panel2.Controls.Add(this.FPlayerNameLabels[i]);
                 this.splitContainer1.Panel2.Controls.Add(this.FCardNumTextBoxes[i]);

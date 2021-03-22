@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Concentration {
@@ -9,16 +10,17 @@ namespace Concentration {
 
         public Game FGame;
         public Trump FTrump;
-        public Players FPlayers;
-        public Form1 FForm1;
+        private Players FPlayers;
+        private Form1 FForm1;
 
         public GameController(Form1 fForm1) {
             FForm1 = fForm1;
             FGame = new Game();
             FTrump = new Trump();
             FPlayers = new Players();
+            FTrump.ClickCard = new List<int>();
             MakeDeck();
-            ShuffleDeck();
+            //ShuffleDeck();
             TakePlayerNum();
         }
 
@@ -53,70 +55,77 @@ namespace Concentration {
         //(view) 現在のターンプレイヤー名を渡す
 
 
-        public const int FSuit = 4;
-        public const int FRank = 13;
+        public const int C_Suit = 4;
+        public const int C_Rank = 13;
         //(model)52枚のカードの束が生成される
         public void MakeDeck() {
-            FTrump.MakeDeck(FSuit, FRank);
+            FTrump.MakeDeck(C_Suit, C_Rank);
         }
         //(model)シャッフルメソッド
         public void ShuffleDeck() {
             FTrump.Shuffle();
         }
-        //(model)カードの配置位置が記憶される(?)
-
-
-        //(view) カードが配置される(?)
 
         //≪LOOP≫
         //(input)カードがクリックされる
         //ボタンのTagから配列の位置を取得する
 
         //カードの位置から指定したカードの情報を得る
-
+        //private int FClickNum = 0;
+        //private List<int> FClickCard;
         //(model)カードをめくるメソッド
         public void OpenCard(int vCardTag) {
-            FTrump.FDeck[vCardTag].IsObverse = FGame.OpenCard(FTrump.FDeck[vCardTag].IsObverse);
+
+            FTrump.ClickCardCount(vCardTag);
+            FTrump.Deck[vCardTag].IsObverse = FGame.OpenCard(FTrump.Deck[vCardTag].IsObverse);
 
         }
 
-        //(view) クリックしたカードが表側表示になる
 
-        //(input)カードがクリックされる
-        //(model)カードをめくるメソッド
-        //(view) クリックしたカードが表側表示になる
         //(model)一致判定メソッド
-        public bool CheckMatchCards() {
-            FGame.CheckMatchFlag = FGame.CheckMatchCards(FTrump.FDeck[0/**/], FTrump.FDeck[1/**/]);
-            return FGame.CheckMatchFlag;
+        public void CheckMatchCards(/*int vFirstCard, int vSecondCard*/) {
+
+            if (FTrump.ClickCard.Count == 2) {
+                if (FTrump.ClickCard[0] == FTrump.ClickCard[1]) {
+                    CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
+                    FTrump.ClickCard.Clear();
+                    return;
+                }
+                bool wCheckMatch = FGame.CheckMatchCards(FTrump.Deck[FTrump.ClickCard[0]], FTrump.Deck[FTrump.ClickCard[1]]);
+                if (wCheckMatch == true) {
+                    FForm1.FCardButtons[FTrump.ClickCard[0]].Enabled = false;
+                    FForm1.FCardButtons[FTrump.ClickCard[1]].Enabled = false;
+                } else {
+
+                    CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
+                }
+                FTrump.ClickCard.Clear();
+
+            }
+            //return FGame.CheckMatchCards(FTrump.Deck[vFirstCard], FTrump.Deck[vSecondCard]);
         }
 
         //(model)数字が同じ場合:取得枚数加算メソッド
         public void PlusCard() {
-            FPlayers.Plus(FPlayers.FPlayers[FPlayers.Turn - 1].OwnCards);
-            FGame.CheckMatchFlag = false;
+            FPlayers.Plus(FPlayers.PlayersList[FPlayers.Turn - 1].OwnCards);
+            FGame.CheckMatch = false;
         }
 
         //(view) 数字が同じ場合:ターンプレイヤーの獲得枚数+2
         public int ViewPlusCard() {
-            return FPlayers.FPlayers[FPlayers.Turn - 1].OwnCards;
+            return FPlayers.PlayersList[FPlayers.Turn - 1].OwnCards;
         }
 
         //(model)数字が同じ場合:終了判定メソッド
         public bool GetEndFlg() {
-            FGame.GameEndFlag = this.FGame.JudgeGameEnd(FTrump.FDeck);
-            return FGame.GameEndFlag;
+            FGame.GameEnd = this.FGame.JudgeGameEnd(FTrump.Deck);
+            return FGame.GameEnd;
         }
         //(model)数字が違った場合:少し待ってからカードを裏返すメソッド*2
-        public void CloseCard() {
-            FTrump.FDeck[0/**/].IsObverse = FGame.CloseCard(FTrump.FDeck[0/**/].IsObverse);
-        }
+        public void CloseCard(int vFirstOpenCard, int vSecondOpenCard) {
 
-
-        //(view) 数字が違った場合:裏側に戻す
-        public string ViewCloseCard() {
-            FForm1.FCardButtons[0/**/].Text = "裏";
-            return FForm1.FCardButtons[0/**/].Text;
+            FTrump.Deck[vFirstOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vFirstOpenCard]);
+            FTrump.Deck[vSecondOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vSecondOpenCard]);
         }
 
 

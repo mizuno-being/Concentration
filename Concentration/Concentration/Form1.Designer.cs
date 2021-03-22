@@ -92,6 +92,7 @@ namespace Concentration {
             // 
             // Shuffle
             // 
+            this.Shuffle.Enabled = false;
             this.Shuffle.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Shuffle.Location = new System.Drawing.Point(20, 536);
             this.Shuffle.Name = "Shuffle";
