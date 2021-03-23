@@ -39,7 +39,7 @@ namespace Concentration {
             FPlayerNum = vPlayerNum;
         }
 
-        public void Reflesh(List<Card> vCards) {
+        public void RefreshCards(List<Card> vCards) {
             for (int i = 0; i < vCards.Count; i++) {
                 if (vCards[i].IsObverse == true) {
                     string wSuit = "♥";
@@ -57,6 +57,17 @@ namespace Concentration {
                     this.FCardButtons[i].Text = "";
                 }
             }
+            this.flowLayoutPanel1.Refresh();
+        }
+
+        public void RefreshTurnPlayer(int vTurn) {
+            this.Teban.Text = FGameController.FPlayers.PlayersList[vTurn].Name;
+            this.Teban.Refresh();
+        }
+
+        public void RefreshMatchCardsNum (int vMatchCardNum, int vTurn) {
+            this.FCardNumTextBoxes[vTurn].Text = $"{ vMatchCardNum}";
+            this.FCardNumTextBoxes[vTurn].Refresh();
         }
 
 
@@ -72,9 +83,6 @@ namespace Concentration {
         public void Button_Click(object sender, EventArgs e) {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
-            Reflesh(FGameController.FTrump.Deck);
-            FGameController.CheckMatchCards();
-            Reflesh(FGameController.FTrump.Deck);
         }
 
         private void Form1_Load(object sender, EventArgs e) {

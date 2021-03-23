@@ -8,7 +8,7 @@ namespace Concentration {
     public class Players {
 
         /// <summary>
-        /// 
+        /// ゲームに参加しているプレイヤー
         /// </summary>
         public List<Player> PlayersList { get; set; }
 
@@ -40,13 +40,18 @@ namespace Concentration {
         }
 
         //手番を次に回す NextTurn
-        public int NextTurn(int vTurn, int vPlayerNum) {
-            //一致判定がfalseの場合
+        public void NextTurn(int vTurn, int vPlayerNum) {
             //  手番のプレイヤー番号 = プレイヤー数の場合
-            //      1を返す　
+            //      0を返す　
             //  手番のプレイヤー番号 < プレイヤー数の場合
             //      手番のプレイヤー番号+1を返す
-            return 1;
+
+            if (vTurn == vPlayerNum -1) {
+                Turn = 0;
+            }
+            if (vTurn < vPlayerNum -1) {
+                Turn = vTurn + 1;
+            }
         }
 
         //勝者判定 JudgeWinner
@@ -61,10 +66,10 @@ namespace Concentration {
         }
 
         //取得枚数加算 Plus
-        public int Plus(int vTurnPlayerCardNum) {
+        public void Plus(Player vPlayer) {
             //一致判定がtrueの場合
             //  ターンプレイヤーのOwnCardsを＋2
-            return 2;
+            vPlayer.OwnCards += 2;
         }
     }
 }

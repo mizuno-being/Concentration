@@ -22,7 +22,6 @@ namespace Concentration {
 
         //カードをめくる OpenCard
         public bool OpenCard(bool vObverse) => true;
-            //クリックされたカードのObverseをtrueにする
             
 
         //一致判定 CheckMatchCards
@@ -35,7 +34,7 @@ namespace Concentration {
 
         //カードを裏返す
         public bool CloseCard(Card vCard) {
-            //Thread.Sleep(500);
+            Thread.Sleep(300);
             return vCard.IsObverse = false;
         }
 

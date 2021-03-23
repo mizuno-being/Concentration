@@ -10,7 +10,7 @@ namespace Concentration {
 
         public Game FGame;
         public Trump FTrump;
-        private Players FPlayers;
+        public Players FPlayers;
         private Form1 FForm1;
 
         public GameController(Form1 fForm1) {
@@ -19,20 +19,24 @@ namespace Concentration {
             FTrump = new Trump();
             FPlayers = new Players();
             FTrump.ClickCard = new List<int>();
+            FPlayers.Turn = 0;
             MakeDeck();
             //ShuffleDeck();
             TakePlayerNum();
+            MakePlayers();
+            SetPlayersName();
         }
 
         //(input)ゲームスタート
         public void GameStart() {
-            FPlayers.Turn = 1;
+            FPlayers.Turn = 0;
         }
         //(input)プレイヤー数を受け取る
 
         public int FPlayerNum;
         public void TakePlayerNum() {
-            FPlayerNum = 2;
+            FPlayerNum = new int();
+            FPlayerNum = 4;
         }
         //(input)プレイヤー名を受け取る
         public List<string> FPlayerNames;
@@ -43,6 +47,7 @@ namespace Concentration {
 
         //(model)プレイヤー名を各Player.Nameにセット
         public void SetPlayersName() {
+            FPlayerNames = new List<string>(FPlayerNum);
             FPlayers.SetPlayersName(FPlayerNames);
         }
 
@@ -50,10 +55,6 @@ namespace Concentration {
         public void PlayerNum() {
             FForm1.GetPlayterNum(FPlayerNum);
         }
-        //(view) それぞれのプレイヤー名を渡す
-
-        //(view) 現在のターンプレイヤー名を渡す
-
 
         public const int C_Suit = 4;
         public const int C_Rank = 13;
@@ -66,54 +67,44 @@ namespace Concentration {
             FTrump.Shuffle();
         }
 
-        //≪LOOP≫
-        //(input)カードがクリックされる
-        //ボタンのTagから配列の位置を取得する
-
-        //カードの位置から指定したカードの情報を得る
-        //private int FClickNum = 0;
-        //private List<int> FClickCard;
         //(model)カードをめくるメソッド
         public void OpenCard(int vCardTag) {
 
             FTrump.ClickCardCount(vCardTag);
             FTrump.Deck[vCardTag].IsObverse = FGame.OpenCard(FTrump.Deck[vCardTag].IsObverse);
+            FForm1.RefreshCards(FTrump.Deck);
+            if (FTrump.ClickCard.Count == 2) {
+                if (FTrump.ClickCard[0] == FTrump.ClickCard[1]) {
+                    FTrump.ClickCard.RemoveAt(1);
+                    return;
+                }
+                bool wCheckMatch = CheckMatchCards(FTrump.ClickCard[0], FTrump.ClickCard[1]);
+                //viewに移す
+                if (wCheckMatch == true) {
+                    FForm1.FCardButtons[FTrump.ClickCard[0]].Enabled = false;
+                    FForm1.FCardButtons[FTrump.ClickCard[1]].Enabled = false;
+                    PlusCard();
+                    FForm1.RefreshMatchCardsNum(FPlayers.PlayersList[FPlayers.Turn].OwnCards, FPlayers.Turn);
 
+                } else {
+                    CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
+                    NextTurn();
+                    FForm1.RefreshTurnPlayer(FPlayers.Turn);
+                }
+                FTrump.ClickCard.Clear();
+            }
+            FForm1.RefreshCards(FTrump.Deck);
         }
 
 
         //(model)一致判定メソッド
-        public void CheckMatchCards(/*int vFirstCard, int vSecondCard*/) {
-
-            if (FTrump.ClickCard.Count == 2) {
-                if (FTrump.ClickCard[0] == FTrump.ClickCard[1]) {
-                    CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
-                    FTrump.ClickCard.Clear();
-                    return;
-                }
-                bool wCheckMatch = FGame.CheckMatchCards(FTrump.Deck[FTrump.ClickCard[0]], FTrump.Deck[FTrump.ClickCard[1]]);
-                if (wCheckMatch == true) {
-                    FForm1.FCardButtons[FTrump.ClickCard[0]].Enabled = false;
-                    FForm1.FCardButtons[FTrump.ClickCard[1]].Enabled = false;
-                } else {
-
-                    CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
-                }
-                FTrump.ClickCard.Clear();
-
-            }
-            //return FGame.CheckMatchCards(FTrump.Deck[vFirstCard], FTrump.Deck[vSecondCard]);
+        public bool CheckMatchCards(int vFirstCard, int vSecondCard) {
+            return FGame.CheckMatchCards(FTrump.Deck[vFirstCard], FTrump.Deck[vSecondCard]);
         }
 
         //(model)数字が同じ場合:取得枚数加算メソッド
         public void PlusCard() {
-            FPlayers.Plus(FPlayers.PlayersList[FPlayers.Turn - 1].OwnCards);
-            FGame.CheckMatch = false;
-        }
-
-        //(view) 数字が同じ場合:ターンプレイヤーの獲得枚数+2
-        public int ViewPlusCard() {
-            return FPlayers.PlayersList[FPlayers.Turn - 1].OwnCards;
+            FPlayers.Plus(FPlayers.PlayersList[FPlayers.Turn]);
         }
 
         //(model)数字が同じ場合:終了判定メソッド
@@ -121,39 +112,25 @@ namespace Concentration {
             FGame.GameEnd = this.FGame.JudgeGameEnd(FTrump.Deck);
             return FGame.GameEnd;
         }
-        //(model)数字が違った場合:少し待ってからカードを裏返すメソッド*2
+        //(model)数字が違った場合:少し待ってからカードを裏返すメソッド
         public void CloseCard(int vFirstOpenCard, int vSecondOpenCard) {
 
             FTrump.Deck[vFirstOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vFirstOpenCard]);
             FTrump.Deck[vSecondOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vSecondOpenCard]);
         }
 
-
         //(model)数字が違った場合:手番を次に回すメソッド
-        public int NextTurn() {
-            this.FPlayers.Turn = this.FPlayers.NextTurn(FPlayers.Turn, FPlayerNum);
-            return FPlayers.Turn;
+        public void NextTurn() {
+            FPlayers.NextTurn(FPlayers.Turn, FPlayerNum);
         }
-
-        //(view) 数字が違った場合:次の手番のプレイヤーを表示する
-        public string NextTeban() {
-            return "プレイヤー1";
-        }
-
-        //≪LOOP≫
 
         //(model)ゲームが終了した場合:勝者判定メソッド
         private List<Player> FWinPlayers;
-
-
-
         public List<Player> GameWinners() {
+            FWinPlayers = new List<Player>();
             this.FWinPlayers = FPlayers.JudgeWinner();
             return FWinPlayers;
         }
-
-        //(view) ゲームが終了した場合:勝者をポップアップ表示する
-        //(view) ゲームが終了した場合:最も多い獲得枚数を表示する
 
         //reset
     }

@@ -45,7 +45,6 @@ namespace Concentration {
 
 
         public void ClickCardCount(int vClickCard) {
-            //this.ClickCard = new List<int>();
             ClickCard.Add(vClickCard);
         }
     }
