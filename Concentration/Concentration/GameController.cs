@@ -85,7 +85,7 @@ namespace Concentration {
                     FForm1.FCardButtons[FTrump.ClickCard[1]].Enabled = false;
                     PlusCard();
                     FForm1.RefreshMatchCardsNum(FPlayers.PlayersList[FPlayers.Turn].OwnCards, FPlayers.Turn);
-
+                    GetGameEnd();
                 } else {
                     CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
                     NextTurn();
@@ -108,9 +108,8 @@ namespace Concentration {
         }
 
         //(model)数字が同じ場合:終了判定メソッド
-        public bool GetEndFlg() {
-            FGame.GameEnd = this.FGame.JudgeGameEnd(FTrump.Deck);
-            return FGame.GameEnd;
+        public void GetGameEnd() {
+            FGame.JudgeGameEnd(FTrump.Deck);
         }
         //(model)数字が違った場合:少し待ってからカードを裏返すメソッド
         public void CloseCard(int vFirstOpenCard, int vSecondOpenCard) {

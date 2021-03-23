@@ -39,11 +39,16 @@ namespace Concentration {
         }
 
         //ゲーム終了判定 JudgeGameEnd
-        public bool JudgeGameEnd(List<Card> vDeck) {
+        public void JudgeGameEnd(List<Card> vDeck) {
             //一致判定がtrueの場合
             //  全てのCardのObverseがtrue
             //      ゲーム終了フラグをtrueにする
-            return false;
+            if ((vDeck.Exists(x=>x.IsObverse==false)) == false) {
+                GameEnd = true;
+            } else {
+                GameEnd = false;
+            }
+            
         }
     }
 }

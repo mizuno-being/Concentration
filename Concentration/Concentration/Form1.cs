@@ -83,6 +83,13 @@ namespace Concentration {
         public void Button_Click(object sender, EventArgs e) {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
+            if (FGameController.FGame.GameEnd == true) {
+                MessageBox.Show("テスト");
+            }
+        }
+
+        public void Winner_Show(object sender, EventArgs e) {
+            MessageBox.Show("テスト");
         }
 
         private void Form1_Load(object sender, EventArgs e) {
