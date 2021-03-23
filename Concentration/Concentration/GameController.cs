@@ -36,7 +36,7 @@ namespace Concentration {
         public int FPlayerNum;
         public void TakePlayerNum() {
             FPlayerNum = new int();
-            FPlayerNum = 2;
+            FPlayerNum = 4;
         }
         //(input)プレイヤー名を受け取る
 
@@ -59,7 +59,7 @@ namespace Concentration {
         /// <summary>
         /// 数字の上限
         /// </summary>
-        public const int C_Rank = 9;
+        public const int C_Rank = 6;
 
         /// <summary>
         /// 52枚のカードの束を作成

@@ -60,31 +60,31 @@ namespace Concentration {
         public List<Player> JudgeWinner() {
             List<Player> wWinners = new List<Player>();
             //単独勝利
-            PlayersList.OrderByDescending(x => x.OwnCards);
-            if (PlayersList[0].OwnCards > PlayersList[1].OwnCards) {
-                wWinners.Add(PlayersList[0]);
+            List<Player> wSortedPlayersList = this.PlayersList.OrderByDescending(x => x.OwnCards).ToList();
+            if (wSortedPlayersList[0].OwnCards > wSortedPlayersList[1].OwnCards) {
+                wWinners.Add(wSortedPlayersList[0]);
                 return wWinners;
             }
             //      同率が2人いる場合
-            if (PlayersList[0].OwnCards == PlayersList[1].OwnCards) {
+            if (wSortedPlayersList[0].OwnCards == wSortedPlayersList[1].OwnCards) {
                 //プレイヤー数が2人の場合
-                if (PlayersList.Count == 2) {
-                    wWinners.Add(PlayersList[0]);
-                    wWinners.Add(PlayersList[1]);
+                if (wSortedPlayersList.Count == 2) {
+                    wWinners.Add(wSortedPlayersList[0]);
+                    wWinners.Add(wSortedPlayersList[1]);
                     return wWinners;
                 } 
-                if (PlayersList[1].OwnCards > PlayersList[2].OwnCards) {
-                    wWinners.Add(PlayersList[0]);
-                    wWinners.Add(PlayersList[1]);
+                if (wSortedPlayersList[1].OwnCards > wSortedPlayersList[2].OwnCards) {
+                    wWinners.Add(wSortedPlayersList[0]);
+                    wWinners.Add(wSortedPlayersList[1]);
                     return wWinners;
                 }
                 
             }
             //          同率が3人いる場合
-            if (PlayersList[0].OwnCards == PlayersList[1].OwnCards && PlayersList[1].OwnCards == PlayersList[2].OwnCards) {
-                wWinners.Add(PlayersList[0]);
-                wWinners.Add(PlayersList[1]);
-                wWinners.Add(PlayersList[2]);
+            if (wSortedPlayersList[0].OwnCards == wSortedPlayersList[1].OwnCards && wSortedPlayersList[1].OwnCards == wSortedPlayersList[2].OwnCards) {
+                wWinners.Add(wSortedPlayersList[0]);
+                wWinners.Add(wSortedPlayersList[1]);
+                wWinners.Add(wSortedPlayersList[2]);
                 return wWinners;
             }
             //の順に判定
