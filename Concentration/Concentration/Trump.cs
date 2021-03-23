@@ -5,7 +5,7 @@ namespace Concentration {
     public class Trump {
 
         /// <summary>
-        /// 
+        /// カードの束
         /// </summary>
         public List<Card> Deck { get; set; }
 
@@ -17,7 +17,7 @@ namespace Concentration {
             this.Deck = new List<Card>();
             for (int s = 0; s < vSuit; s++) {
                 for (int r = 1; r < vRank+1; r++) {
-                    Deck.Add( new Card { Suit = s, Rank = r, IsObverse = false });
+                    this.Deck.Add( new Card { Suit = s, Rank = r, IsObverse = false });
                 }
             }
         }
@@ -30,23 +30,27 @@ namespace Concentration {
 
             Random wRandom = new Random();
 
-            int x = Deck.Count;
+            int x = this.Deck.Count;
 
             while (x > 1) {
                 x--;
                 int y = wRandom.Next(x + 1);
-                Card z = Deck[y];
-                Deck[y] = Deck[x];
-                Deck[x] = z;
+                Card z = this.Deck[y];
+                this.Deck[y] = this.Deck[x];
+                this.Deck[x] = z;
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<int> ClickCard { get; set; }
 
-
-        public void ClickCardCount(int vClickCard) {
-            ClickCard.Add(vClickCard);
-        }
+        /// <summary>
+        /// クリックされたカードの追加
+        /// </summary>
+        /// <param name="vClickCard"></param>
+        public void ClickCardCount(int vClickCard) => this.ClickCard.Add(vClickCard);
     }
 }
 

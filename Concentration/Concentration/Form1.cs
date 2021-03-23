@@ -18,14 +18,17 @@ namespace Concentration {
         /// トランプカードを表示するボタン
         /// </summary>
         public Button[] FCardButtons;
+
         /// <summary>
         /// プレイヤー名を表示するラベル
         /// </summary>
         private Label[] FPlayerNameLabels;
+
         /// <summary>
         /// 取得枚数を表示するテキストボックス
         /// </summary>
         public TextBox[] FCardNumTextBoxes;
+
         /// <summary>
         /// 単位(枚)を表示するラベル
         /// </summary>
@@ -35,10 +38,16 @@ namespace Concentration {
         public int FPlayerNum;
         public int FTrumpCardNum = GameController.C_Suit * GameController.C_Rank;
 
-        public void GetPlayterNum(int vPlayerNum) {
-            FPlayerNum = vPlayerNum;
-        }
+        /// <summary>
+        /// プレイヤー数を受け取る
+        /// </summary>
+        /// <param name="vPlayerNum"></param>
+        public void GetPlayterNum(int vPlayerNum) => FPlayerNum = vPlayerNum;
 
+        /// <summary>
+        /// トランプを再描画
+        /// </summary>
+        /// <param name="vCards"></param>
         public void RefreshCards(List<Card> vCards) {
             for (int i = 0; i < vCards.Count; i++) {
                 if (vCards[i].IsObverse == true) {
@@ -60,15 +69,30 @@ namespace Concentration {
             this.flowLayoutPanel1.Refresh();
         }
 
+        /// <summary>
+        /// ターンプレイヤーを再描画
+        /// </summary>
+        /// <param name="vTurn"></param>
         public void RefreshTurnPlayer(int vTurn) {
             this.Teban.Text = FGameController.FPlayers.PlayersList[vTurn].Name;
             this.Teban.Refresh();
         }
 
-        public void RefreshMatchCardsNum (int vMatchCardNum, int vTurn) {
+        /// <summary>
+        /// 取得枚数を再描画
+        /// </summary>
+        /// <param name="vMatchCardNum"></param>
+        /// <param name="vTurn"></param>
+        public void RefreshMatchCardsNum(int vMatchCardNum, int vTurn) {
             this.FCardNumTextBoxes[vTurn].Text = $"{ vMatchCardNum}";
             this.FCardNumTextBoxes[vTurn].Refresh();
         }
+
+        /// <summary>
+        /// カードボタンを非活性化
+        /// </summary>
+        /// <param name="vCardButtonNum"></param>
+        public void EnableCardButton(int vCardButtonNum) => this.FCardButtons[vCardButtonNum].Enabled = false;
 
 
         public Form1() {
@@ -84,7 +108,15 @@ namespace Concentration {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
             if (FGameController.FGame.GameEnd == true) {
-                MessageBox.Show("テスト");
+                if (FGameController.FWinPlayers.Count == 1) {
+                    MessageBox.Show($"{FGameController.FWinPlayers[0].Name}の勝ち!!");
+                }
+                if (FGameController.FWinPlayers.Count == 2) {
+                    MessageBox.Show($"{FGameController.FWinPlayers[0].Name}と{FGameController.FWinPlayers[1].Name}の勝ち!!");
+                }
+                if (FGameController.FWinPlayers.Count == 3) {
+                    MessageBox.Show($"{FGameController.FWinPlayers[0].Name}と{FGameController.FWinPlayers[1].Name}と{FGameController.FWinPlayers[2].Name}の勝ち!!");
+                }
             }
         }
 

@@ -22,9 +22,9 @@ namespace Concentration {
         /// </summary>
         /// <param name="vPlayerNum"></param>
         public void MakePlayers(int vPlayerNum) {
-            PlayersList = new List<Player>();
+            this.PlayersList = new List<Player>();
             for (int i = 1; i <= vPlayerNum; i++) {
-                PlayersList.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCards = 0 });
+                this.PlayersList.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCards = 0 });
             }
         }
 
@@ -35,41 +35,66 @@ namespace Concentration {
         public void SetPlayersName(List<string> vNames) {
             if (vNames.Count > 0)
                 for (int i = 0; i < vNames.Count; i++) {
-                    PlayersList[i].Name = vNames[i];
+                    this.PlayersList[i].Name = vNames[i];
                 }
         }
 
-        //手番を次に回す NextTurn
+        /// <summary>
+        /// 手番を次に回す
+        /// </summary>
+        /// <param name="vTurn"></param>
+        /// <param name="vPlayerNum"></param>
         public void NextTurn(int vTurn, int vPlayerNum) {
-            //  手番のプレイヤー番号 = プレイヤー数の場合
-            //      0を返す　
-            //  手番のプレイヤー番号 < プレイヤー数の場合
-            //      手番のプレイヤー番号+1を返す
-
-            if (vTurn == vPlayerNum -1) {
-                Turn = 0;
+            if (vTurn == vPlayerNum - 1) {
+                this.Turn = 0;
             }
-            if (vTurn < vPlayerNum -1) {
-                Turn = vTurn + 1;
+            if (vTurn < vPlayerNum - 1) {
+                this.Turn = vTurn + 1;
             }
         }
 
-        //勝者判定 JudgeWinner
+        /// <summary>
+        /// 勝者判定
+        /// </summary>
+        /// <returns></returns>
         public List<Player> JudgeWinner() {
-            //ゲーム終了フラグtrue時に判定
-            //  同率が3人いる場合
+            List<Player> wWinners = new List<Player>();
+            //単独勝利
+            PlayersList.OrderByDescending(x => x.OwnCards);
+            if (PlayersList[0].OwnCards > PlayersList[1].OwnCards) {
+                wWinners.Add(PlayersList[0]);
+                return wWinners;
+            }
             //      同率が2人いる場合
-            //          単独勝利
+            if (PlayersList[0].OwnCards == PlayersList[1].OwnCards) {
+                //プレイヤー数が2人の場合
+                if (PlayersList.Count == 2) {
+                    wWinners.Add(PlayersList[0]);
+                    wWinners.Add(PlayersList[1]);
+                    return wWinners;
+                } 
+                if (PlayersList[1].OwnCards > PlayersList[2].OwnCards) {
+                    wWinners.Add(PlayersList[0]);
+                    wWinners.Add(PlayersList[1]);
+                    return wWinners;
+                }
+                
+            }
+            //          同率が3人いる場合
+            if (PlayersList[0].OwnCards == PlayersList[1].OwnCards && PlayersList[1].OwnCards == PlayersList[2].OwnCards) {
+                wWinners.Add(PlayersList[0]);
+                wWinners.Add(PlayersList[1]);
+                wWinners.Add(PlayersList[2]);
+                return wWinners;
+            }
             //の順に判定
-            List<Player> Kari = new List<Player>();
-            return Kari;
+            return wWinners;
         }
 
-        //取得枚数加算 Plus
-        public void Plus(Player vPlayer) {
-            //一致判定がtrueの場合
-            //  ターンプレイヤーのOwnCardsを＋2
-            vPlayer.OwnCards += 2;
-        }
+        /// <summary>
+        /// 取得枚数加算
+        /// </summary>
+        /// <param name="vPlayer"></param>
+        public void Plus(Player vPlayer) => vPlayer.OwnCards += 2;
     }
 }

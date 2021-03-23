@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Concentration {
     public class Game {
-
-
 
         /// <summary>
         /// ゲーム終了フラグ
@@ -16,15 +10,18 @@ namespace Concentration {
         public bool GameEnd { get; set; }
 
         /// <summary>
-        /// 一致判定フラグ
+        /// カードをめくる
         /// </summary>
-        public bool CheckMatch { get; set; }
-
-        //カードをめくる OpenCard
+        /// <param name="vObverse"></param>
+        /// <returns></returns>
         public bool OpenCard(bool vObverse) => true;
             
-
-        //一致判定 CheckMatchCards
+        /// <summary>
+        /// 一致判定
+        /// </summary>
+        /// <param name="vFirstCard"></param>
+        /// <param name="vSecondCard"></param>
+        /// <returns></returns>
         public bool CheckMatchCards(Card vFirstCard, Card vSecondCard) {
             if (vFirstCard.Rank == vSecondCard.Rank) {
                 return true;
@@ -32,21 +29,25 @@ namespace Concentration {
             return false;
         }
 
-        //カードを裏返す
+        /// <summary>
+        /// カードを裏返す
+        /// </summary>
+        /// <param name="vCard"></param>
+        /// <returns></returns>
         public bool CloseCard(Card vCard) {
             Thread.Sleep(300);
             return vCard.IsObverse = false;
         }
 
-        //ゲーム終了判定 JudgeGameEnd
+        /// <summary>
+        /// ゲーム終了判定
+        /// </summary>
+        /// <param name="vDeck"></param>
         public void JudgeGameEnd(List<Card> vDeck) {
-            //一致判定がtrueの場合
-            //  全てのCardのObverseがtrue
-            //      ゲーム終了フラグをtrueにする
             if ((vDeck.Exists(x=>x.IsObverse==false)) == false) {
-                GameEnd = true;
+                this.GameEnd = true;
             } else {
-                GameEnd = false;
+                this.GameEnd = false;
             }
             
         }

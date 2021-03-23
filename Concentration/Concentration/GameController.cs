@@ -36,38 +36,45 @@ namespace Concentration {
         public int FPlayerNum;
         public void TakePlayerNum() {
             FPlayerNum = new int();
-            FPlayerNum = 4;
+            FPlayerNum = 2;
         }
         //(input)プレイヤー名を受け取る
-        public List<string> FPlayerNames;
+
         //(model)プレイヤー数だけPlayerインスタンスを作成
         public void MakePlayers() {
             FPlayers.MakePlayers(FPlayerNum);
         }
-
+        public List<string> FPlayerNames;
         //(model)プレイヤー名を各Player.Nameにセット
         public void SetPlayersName() {
             FPlayerNames = new List<string>(FPlayerNum);
             FPlayers.SetPlayersName(FPlayerNames);
         }
 
-        //(view) プレイヤー数を渡す
-        public void PlayerNum() {
-            FForm1.GetPlayterNum(FPlayerNum);
-        }
+        /// <summary>
+        /// スートの数
+        /// </summary>
+        public const int C_Suit = 2;
 
-        public const int C_Suit = 4;
-        public const int C_Rank = 13;
-        //(model)52枚のカードの束が生成される
-        public void MakeDeck() {
-            FTrump.MakeDeck(C_Suit, C_Rank);
-        }
-        //(model)シャッフルメソッド
-        public void ShuffleDeck() {
-            FTrump.Shuffle();
-        }
+        /// <summary>
+        /// 数字の上限
+        /// </summary>
+        public const int C_Rank = 9;
 
-        //(model)カードをめくるメソッド
+        /// <summary>
+        /// 52枚のカードの束を作成
+        /// </summary>
+        public void MakeDeck() => FTrump.MakeDeck(C_Suit, C_Rank);
+
+        /// <summary>
+        /// デッキをシャッフル
+        /// </summary>
+        public void ShuffleDeck() => FTrump.Shuffle();
+
+        /// <summary>
+        /// カードをめくる
+        /// </summary>
+        /// <param name="vCardTag"></param>
         public void OpenCard(int vCardTag) {
 
             FTrump.ClickCardCount(vCardTag);
@@ -79,13 +86,15 @@ namespace Concentration {
                     return;
                 }
                 bool wCheckMatch = CheckMatchCards(FTrump.ClickCard[0], FTrump.ClickCard[1]);
-                //viewに移す
                 if (wCheckMatch == true) {
-                    FForm1.FCardButtons[FTrump.ClickCard[0]].Enabled = false;
-                    FForm1.FCardButtons[FTrump.ClickCard[1]].Enabled = false;
+                    FForm1.EnableCardButton(FTrump.ClickCard[0]);
+                    FForm1.EnableCardButton(FTrump.ClickCard[1]);
                     PlusCard();
                     FForm1.RefreshMatchCardsNum(FPlayers.PlayersList[FPlayers.Turn].OwnCards, FPlayers.Turn);
                     GetGameEnd();
+                    if (FGame.GameEnd == true) {
+                        GetGameWinners();
+                    }
                 } else {
                     CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
                     NextTurn();
@@ -96,39 +105,47 @@ namespace Concentration {
             FForm1.RefreshCards(FTrump.Deck);
         }
 
+        /// <summary>
+        /// 一致判定
+        /// </summary>
+        /// <param name="vFirstCard"></param>
+        /// <param name="vSecondCard"></param>
+        /// <returns></returns>
+        public bool CheckMatchCards(int vFirstCard, int vSecondCard) => FGame.CheckMatchCards(FTrump.Deck[vFirstCard], FTrump.Deck[vSecondCard]);
 
-        //(model)一致判定メソッド
-        public bool CheckMatchCards(int vFirstCard, int vSecondCard) {
-            return FGame.CheckMatchCards(FTrump.Deck[vFirstCard], FTrump.Deck[vSecondCard]);
-        }
+        /// <summary>
+        /// 取得枚数加算
+        /// </summary>
+        public void PlusCard() => FPlayers.Plus(FPlayers.PlayersList[FPlayers.Turn]);
 
-        //(model)数字が同じ場合:取得枚数加算メソッド
-        public void PlusCard() {
-            FPlayers.Plus(FPlayers.PlayersList[FPlayers.Turn]);
-        }
+        /// <summary>
+        /// 終了判定
+        /// </summary>
+        public void GetGameEnd() => FGame.JudgeGameEnd(FTrump.Deck);
 
-        //(model)数字が同じ場合:終了判定メソッド
-        public void GetGameEnd() {
-            FGame.JudgeGameEnd(FTrump.Deck);
-        }
-        //(model)数字が違った場合:少し待ってからカードを裏返すメソッド
+        /// <summary>
+        /// カードを裏返す
+        /// </summary>
+        /// <param name="vFirstOpenCard"></param>
+        /// <param name="vSecondOpenCard"></param>
         public void CloseCard(int vFirstOpenCard, int vSecondOpenCard) {
 
             FTrump.Deck[vFirstOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vFirstOpenCard]);
             FTrump.Deck[vSecondOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vSecondOpenCard]);
         }
 
-        //(model)数字が違った場合:手番を次に回すメソッド
-        public void NextTurn() {
-            FPlayers.NextTurn(FPlayers.Turn, FPlayerNum);
-        }
+        /// <summary>
+        /// 手番を次に回す
+        /// </summary>
+        public void NextTurn() => FPlayers.NextTurn(FPlayers.Turn, FPlayerNum);
 
-        //(model)ゲームが終了した場合:勝者判定メソッド
-        private List<Player> FWinPlayers;
-        public List<Player> GameWinners() {
+        /// <summary>
+        /// 勝者判定
+        /// </summary>
+        public List<Player> FWinPlayers;
+        public void GetGameWinners() {
             FWinPlayers = new List<Player>();
             this.FWinPlayers = FPlayers.JudgeWinner();
-            return FWinPlayers;
         }
 
         //reset
