@@ -19,7 +19,6 @@ namespace Concentration {
         /// <summary>
         /// プレイヤー数だけPlayerインスタンスを作成
         /// </summary>
-        /// <param name="vPlayerNum"></param>
         public void MakePlayers(int vPlayerNum) {
             this.PlayersList = new List<Player>();
             for (int i = 1; i <= vPlayerNum; i++) {
@@ -30,7 +29,6 @@ namespace Concentration {
         /// <summary>
         /// 入力された各プレイヤー名を各Player.Nameにセット
         /// </summary>
-        /// <param name="vNames"></param>
         public void SetPlayersName(List<string> vNames) {
             if (vNames.Count > 0)
                 for (int i = 0; i < vNames.Count; i++) {
@@ -41,7 +39,6 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数加算
         /// </summary>
-        /// <param name="vPlayer"></param>
         public void PlusCardNum(Player vPlayer) => vPlayer.OwnCards += 2;
 
         /// <summary>
@@ -52,8 +49,6 @@ namespace Concentration {
         /// <summary>
         /// 手番を次に回す
         /// </summary>
-        /// <param name="vTurn"></param>
-        /// <param name="vPlayerNum"></param>
         public void NextTurn(int vTurn, int vPlayerNum) {
             if (vTurn == vPlayerNum - 1) {
                 this.Turn = 0;
@@ -66,7 +61,6 @@ namespace Concentration {
         /// <summary>
         /// 勝者判定
         /// </summary>
-        /// <returns></returns>
         public List<Player> JudgeWinner() {
             List<Player> wWinners = new List<Player>();
             List<Player> wSortedOwnCards = this.PlayersList.OrderByDescending(x => x.OwnCards).ToList();

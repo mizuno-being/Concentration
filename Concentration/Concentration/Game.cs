@@ -14,9 +14,6 @@ namespace Concentration {
         /// <summary>
         /// 一致判定
         /// </summary>
-        /// <param name="vFirstCard"></param>
-        /// <param name="vSecondCard"></param>
-        /// <returns></returns>
         public bool IsMatchCards(Card vFirstCard, Card vSecondCard) {
             if (vFirstCard.Rank == vSecondCard.Rank) {
                 return true;
@@ -27,18 +24,14 @@ namespace Concentration {
         /// <summary>
         /// カードをめくる
         /// </summary>
-        /// <param name="vObverse"></param>
-        /// <returns></returns>
         public bool IsOpenCard(bool vObverse) => true;
 
         /// <summary>
         /// カードを裏返す
         /// </summary>
-        /// <param name="vCard"></param>
-        /// <returns></returns>
-        public bool IsCloseCard(Card vCard) {
-            Thread.Sleep(300);
-            return vCard.IsObverse = false;
+        public void CloseCard(Card vFirstCard, Card vSecondCard) {
+            vFirstCard.IsObverse = false;
+            vSecondCard.IsObverse = false;
         }
 
         /// <summary>

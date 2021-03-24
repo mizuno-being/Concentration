@@ -19,7 +19,6 @@ namespace Concentration {
         /// <summary>
         /// カード52枚でデッキ作成
         /// </summary>
-        /// <returns></returns>
         public void MakeDeck(int vSuit, int vRank) {
             this.Deck = new List<Card>();
             for (int s = 0; s < vSuit; s++) {
@@ -32,7 +31,6 @@ namespace Concentration {
         /// <summary>
         /// シャッフル
         /// </summary>
-        /// <returns></returns>
         public void Shuffle() {
             Random wRandom = new Random();
             int x = this.Deck.Count;
@@ -53,7 +51,6 @@ namespace Concentration {
         /// <summary>
         /// クリックされたカードの位置を追加
         /// </summary>
-        /// <param name="vClickCard"></param>
         public void ClickCardCount(int vClickCard) => this.ClickCard.Add(vClickCard);
     }
 }

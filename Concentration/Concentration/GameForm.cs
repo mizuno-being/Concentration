@@ -34,7 +34,6 @@ namespace Concentration {
         /// </summary>
         private Label[] FUnitLabels;
 
-
         private int FPlayerNum;
 
         private int FTrumpCardNum = GameController.C_Suit * GameController.C_Rank;
@@ -42,13 +41,11 @@ namespace Concentration {
         /// <summary>
         /// プレイヤー数を受け取る
         /// </summary>
-        /// <param name="vPlayerNum"></param>
         private void GetPlayterNum(int vPlayerNum) => FPlayerNum = vPlayerNum;
 
         /// <summary>
         /// トランプを再描画
         /// </summary>
-        /// <param name="vCards"></param>
         public void RefreshCards(List<Card> vCards) {
             for (int i = 0; i < vCards.Count; i++) {
                 if (vCards[i].IsObverse) {
@@ -76,7 +73,6 @@ namespace Concentration {
         /// <summary>
         /// ターンプレイヤーを再描画
         /// </summary>
-        /// <param name="vTurn"></param>
         public void RefreshTurnPlayer(int vTurn) {
             this.Teban.Text = FGameController.Players.PlayersList[vTurn].Name;
             this.Teban.Refresh();
@@ -85,8 +81,6 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数を再描画
         /// </summary>
-        /// <param name="vMatchCardNum"></param>
-        /// <param name="vTurn"></param>
         public void RefreshMatchCardsNum(int vMatchCardNum, int vTurn) {
             this.FCardNumTextBoxes[vTurn].Text = $"{ vMatchCardNum}";
             this.FCardNumTextBoxes[vTurn].Refresh();
@@ -97,15 +91,9 @@ namespace Concentration {
             FGameController = new GameController(this);
         }
 
-        private void Form1_Click(object sender, EventArgs e) {
-
-        }
-
         /// <summary>
         /// カードのボタンをクリック
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Button_Click(object sender, EventArgs e) {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
@@ -125,8 +113,6 @@ namespace Concentration {
         /// <summary>
         /// シャッフルボタンクリック
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Shuffle_Button_Click(object sender, EventArgs e) {
             FGameController.ShuffleDeck();
             RefreshCards(FGameController.Trump.Deck);
