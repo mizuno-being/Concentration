@@ -1,75 +1,87 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
+/// <summary>
+/// 神経衰弱
+/// </summary>
 namespace Concentration {
+
+    /// <summary>
+    /// コントローラー
+    /// </summary>
     public class GameController {
 
-        public Game FGame;
-        public Trump FTrump;
-        public Players FPlayers;
-        private Form1 FForm1;
+        public Game Game;
+        public Trump Trump;
+        public Players Players;
+        private GameForm FGameForm;
 
-        public GameController(Form1 fForm1) {
-            FForm1 = fForm1;
-            FGame = new Game();
-            FTrump = new Trump();
-            FPlayers = new Players();
-            FTrump.ClickCard = new List<int>();
-            FPlayers.Turn = 0;
+        /// <summary>
+        /// スタート時呼び出し
+        /// </summary>
+        /// <param name="fForm"></param>
+        public GameController(GameForm fForm) {
+            FGameForm = fForm;
+            Game = new Game();
+            Trump = new Trump();
+            Players = new Players();
+            Trump.ClickCard = new List<int>();
+            PlayerNum = new int();
+            Players.Turn = 0;
             MakeDeck();
-            //ShuffleDeck();
+            ShuffleDeck();
             TakePlayerNum();
             MakePlayers();
             SetPlayersName();
         }
 
-        //(input)ゲームスタート
-        public void GameStart() {
-            FPlayers.Turn = 0;
+        /// <summary>
+        /// ゲームスタート
+        /// </summary>
+        private void GameStart() {
+            Players.Turn = 0;
         }
-        //(input)プレイヤー数を受け取る
 
-        public int FPlayerNum;
-        public void TakePlayerNum() {
-            FPlayerNum = new int();
-            FPlayerNum = 4;
-        }
-        //(input)プレイヤー名を受け取る
+        public int PlayerNum;
 
-        //(model)プレイヤー数だけPlayerインスタンスを作成
-        public void MakePlayers() {
-            FPlayers.MakePlayers(FPlayerNum);
-        }
+        /// <summary>
+        /// プレイヤー数の決定
+        /// </summary>
+        private void TakePlayerNum() => PlayerNum = 4;
+
+        /// <summary>
+        /// プレイヤー数だけPlayerインスタンスを作成
+        /// </summary>
+        private void MakePlayers() => Players.MakePlayers(PlayerNum);
+
         public List<string> FPlayerNames;
-        //(model)プレイヤー名を各Player.Nameにセット
-        public void SetPlayersName() {
-            FPlayerNames = new List<string>(FPlayerNum);
-            FPlayers.SetPlayersName(FPlayerNames);
+
+        /// <summary>
+        /// プレイヤー名を各Player.Nameにセット
+        /// </summary>
+        private void SetPlayersName() {
+            FPlayerNames = new List<string>(PlayerNum);
+            Players.SetPlayersName(FPlayerNames);
         }
 
         /// <summary>
         /// スートの数
         /// </summary>
-        public const int C_Suit = 2;
+        public const int C_Suit = 4;
 
         /// <summary>
         /// 数字の上限
         /// </summary>
-        public const int C_Rank = 6;
+        public const int C_Rank = 13;
 
         /// <summary>
         /// 52枚のカードの束を作成
         /// </summary>
-        public void MakeDeck() => FTrump.MakeDeck(C_Suit, C_Rank);
+        private void MakeDeck() => Trump.MakeDeck(C_Suit, C_Rank);
 
         /// <summary>
         /// デッキをシャッフル
         /// </summary>
-        public void ShuffleDeck() => FTrump.Shuffle();
+        public void ShuffleDeck() => Trump.Shuffle();
 
         /// <summary>
         /// カードをめくる
@@ -77,32 +89,26 @@ namespace Concentration {
         /// <param name="vCardTag"></param>
         public void OpenCard(int vCardTag) {
 
-            FTrump.ClickCardCount(vCardTag);
-            FTrump.Deck[vCardTag].IsObverse = FGame.OpenCard(FTrump.Deck[vCardTag].IsObverse);
-            FForm1.RefreshCards(FTrump.Deck);
-            if (FTrump.ClickCard.Count == 2) {
-                if (FTrump.ClickCard[0] == FTrump.ClickCard[1]) {
-                    FTrump.ClickCard.RemoveAt(1);
-                    return;
-                }
-                bool wCheckMatch = CheckMatchCards(FTrump.ClickCard[0], FTrump.ClickCard[1]);
-                if (wCheckMatch == true) {
-                    FForm1.EnableCardButton(FTrump.ClickCard[0]);
-                    FForm1.EnableCardButton(FTrump.ClickCard[1]);
+            Trump.ClickCardCount(vCardTag);
+            Trump.Deck[vCardTag].IsObverse = Game.IsOpenCard(Trump.Deck[vCardTag].IsObverse);
+            FGameForm.RefreshCards(Trump.Deck);
+            if (Trump.ClickCard.Count == 2) {
+                bool wCheckMatch = IsMatchCards(Trump.ClickCard[0], Trump.ClickCard[1]);
+                if (wCheckMatch) {
                     PlusCard();
-                    FForm1.RefreshMatchCardsNum(FPlayers.PlayersList[FPlayers.Turn].OwnCards, FPlayers.Turn);
-                    GetGameEnd();
-                    if (FGame.GameEnd == true) {
-                        GetGameWinners();
+                    FGameForm.RefreshMatchCardsNum(Players.PlayersList[Players.Turn].OwnCards, Players.Turn);
+                    GameEnd();
+                    if (Game.IsGameEnd) {
+                        GameWinners();
                     }
                 } else {
-                    CloseCard(FTrump.ClickCard[0], FTrump.ClickCard[1]);
+                    CloseCard(Trump.ClickCard[0], Trump.ClickCard[1]);
                     NextTurn();
-                    FForm1.RefreshTurnPlayer(FPlayers.Turn);
+                    FGameForm.RefreshTurnPlayer(Players.Turn);
                 }
-                FTrump.ClickCard.Clear();
+                Trump.ClickCard.Clear();
             }
-            FForm1.RefreshCards(FTrump.Deck);
+            FGameForm.RefreshCards(Trump.Deck);
         }
 
         /// <summary>
@@ -111,41 +117,41 @@ namespace Concentration {
         /// <param name="vFirstCard"></param>
         /// <param name="vSecondCard"></param>
         /// <returns></returns>
-        public bool CheckMatchCards(int vFirstCard, int vSecondCard) => FGame.CheckMatchCards(FTrump.Deck[vFirstCard], FTrump.Deck[vSecondCard]);
+        private bool IsMatchCards(int vFirstCard, int vSecondCard) => Game.IsMatchCards(Trump.Deck[vFirstCard], Trump.Deck[vSecondCard]);
 
         /// <summary>
         /// 取得枚数加算
         /// </summary>
-        public void PlusCard() => FPlayers.Plus(FPlayers.PlayersList[FPlayers.Turn]);
+        private void PlusCard() => Players.PlusCardNum(Players.PlayersList[Players.Turn]);
 
         /// <summary>
         /// 終了判定
         /// </summary>
-        public void GetGameEnd() => FGame.JudgeGameEnd(FTrump.Deck);
+        private void GameEnd() => Game.JudgeGameEnd(Trump.Deck);
 
         /// <summary>
         /// カードを裏返す
         /// </summary>
         /// <param name="vFirstOpenCard"></param>
         /// <param name="vSecondOpenCard"></param>
-        public void CloseCard(int vFirstOpenCard, int vSecondOpenCard) {
-
-            FTrump.Deck[vFirstOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vFirstOpenCard]);
-            FTrump.Deck[vSecondOpenCard].IsObverse = FGame.CloseCard(FTrump.Deck[vSecondOpenCard]);
+        private void CloseCard(int vFirstOpenCard, int vSecondOpenCard) {
+            Trump.Deck[vFirstOpenCard].IsObverse = Game.IsCloseCard(Trump.Deck[vFirstOpenCard]);
+            Trump.Deck[vSecondOpenCard].IsObverse = Game.IsCloseCard(Trump.Deck[vSecondOpenCard]);
         }
 
         /// <summary>
         /// 手番を次に回す
         /// </summary>
-        public void NextTurn() => FPlayers.NextTurn(FPlayers.Turn, FPlayerNum);
+        private void NextTurn() => Players.NextTurn(Players.Turn, PlayerNum);
+
+        public List<Player> WinPlayers;
 
         /// <summary>
         /// 勝者判定
         /// </summary>
-        public List<Player> FWinPlayers;
-        public void GetGameWinners() {
-            FWinPlayers = new List<Player>();
-            this.FWinPlayers = FPlayers.JudgeWinner();
+        private void GameWinners() {
+            WinPlayers = new List<Player>();
+            this.WinPlayers = Players.JudgeWinner();
         }
 
         //reset

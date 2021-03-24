@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+/// <summary>
+/// 神経衰弱
+/// </summary>
 namespace Concentration {
+
+    /// <summary>
+    ///プレイヤーに関する操作を行う
+    /// </summary>
     public class Players {
 
         /// <summary>
         /// ゲームに参加しているプレイヤー
         /// </summary>
         public List<Player> PlayersList { get; set; }
-
-        /// <summary>
-        /// 誰の手番か
-        /// </summary>
-        public int Turn { get; set; }
 
         /// <summary>
         /// プレイヤー数だけPlayerインスタンスを作成
@@ -40,6 +39,17 @@ namespace Concentration {
         }
 
         /// <summary>
+        /// 取得枚数加算
+        /// </summary>
+        /// <param name="vPlayer"></param>
+        public void PlusCardNum(Player vPlayer) => vPlayer.OwnCards += 2;
+
+        /// <summary>
+        /// 誰の手番か
+        /// </summary>
+        public int Turn { get; set; }
+
+        /// <summary>
         /// 手番を次に回す
         /// </summary>
         /// <param name="vTurn"></param>
@@ -59,42 +69,30 @@ namespace Concentration {
         /// <returns></returns>
         public List<Player> JudgeWinner() {
             List<Player> wWinners = new List<Player>();
-            //単独勝利
-            List<Player> wSortedPlayersList = this.PlayersList.OrderByDescending(x => x.OwnCards).ToList();
-            if (wSortedPlayersList[0].OwnCards > wSortedPlayersList[1].OwnCards) {
-                wWinners.Add(wSortedPlayersList[0]);
+            List<Player> wSortedOwnCards = this.PlayersList.OrderByDescending(x => x.OwnCards).ToList();
+            if (wSortedOwnCards[0].OwnCards > wSortedOwnCards[1].OwnCards) {
+                wWinners.Add(wSortedOwnCards[0]);
                 return wWinners;
             }
-            //      同率が2人いる場合
-            if (wSortedPlayersList[0].OwnCards == wSortedPlayersList[1].OwnCards) {
-                //プレイヤー数が2人の場合
-                if (wSortedPlayersList.Count == 2) {
-                    wWinners.Add(wSortedPlayersList[0]);
-                    wWinners.Add(wSortedPlayersList[1]);
-                    return wWinners;
-                } 
-                if (wSortedPlayersList[1].OwnCards > wSortedPlayersList[2].OwnCards) {
-                    wWinners.Add(wSortedPlayersList[0]);
-                    wWinners.Add(wSortedPlayersList[1]);
+            if (wSortedOwnCards[0].OwnCards == wSortedOwnCards[1].OwnCards) {
+                if (wSortedOwnCards.Count == 2) {
+                    wWinners.Add(wSortedOwnCards[0]);
+                    wWinners.Add(wSortedOwnCards[1]);
                     return wWinners;
                 }
-                
+                if (wSortedOwnCards[1].OwnCards > wSortedOwnCards[2].OwnCards) {
+                    wWinners.Add(wSortedOwnCards[0]);
+                    wWinners.Add(wSortedOwnCards[1]);
+                    return wWinners;
+                }
             }
-            //          同率が3人いる場合
-            if (wSortedPlayersList[0].OwnCards == wSortedPlayersList[1].OwnCards && wSortedPlayersList[1].OwnCards == wSortedPlayersList[2].OwnCards) {
-                wWinners.Add(wSortedPlayersList[0]);
-                wWinners.Add(wSortedPlayersList[1]);
-                wWinners.Add(wSortedPlayersList[2]);
+            if (wSortedOwnCards[0].OwnCards == wSortedOwnCards[1].OwnCards && wSortedOwnCards[1].OwnCards == wSortedOwnCards[2].OwnCards) {
+                wWinners.Add(wSortedOwnCards[0]);
+                wWinners.Add(wSortedOwnCards[1]);
+                wWinners.Add(wSortedOwnCards[2]);
                 return wWinners;
             }
-            //の順に判定
             return wWinners;
         }
-
-        /// <summary>
-        /// 取得枚数加算
-        /// </summary>
-        /// <param name="vPlayer"></param>
-        public void Plus(Player vPlayer) => vPlayer.OwnCards += 2;
     }
 }

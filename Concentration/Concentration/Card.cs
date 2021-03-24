@@ -1,5 +1,8 @@
-﻿
+﻿/// <summary>
+/// 神経衰弱
+/// </summary>
 namespace Concentration {
+
     /// <summary>
     /// トランプのカード
     /// </summary>

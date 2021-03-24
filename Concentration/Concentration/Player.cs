@@ -1,5 +1,11 @@
-﻿
+﻿/// <summary>
+/// 神経衰弱
+/// </summary>
 namespace Concentration {
+
+    /// <summary>
+    /// プレイヤー
+    /// </summary>
     public class Player {
 
         /// <summary>

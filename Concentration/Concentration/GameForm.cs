@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/// <summary>
+/// 神経衰弱
+/// </summary>
 namespace Concentration {
-    public partial class Form1 : Form {
+    /// <summary>
+    /// 神経衰弱を行う画面
+    /// </summary>
+    public partial class GameForm : Form {
 
         private GameController FGameController;
 
         /// <summary>
         /// トランプカードを表示するボタン
         /// </summary>
-        public Button[] FCardButtons;
+        private Button[] FCardButtons;
 
         /// <summary>
         /// プレイヤー名を表示するラベル
@@ -27,7 +27,7 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数を表示するテキストボックス
         /// </summary>
-        public TextBox[] FCardNumTextBoxes;
+        private TextBox[] FCardNumTextBoxes;
 
         /// <summary>
         /// 単位(枚)を表示するラベル
@@ -35,14 +35,15 @@ namespace Concentration {
         private Label[] FUnitLabels;
 
 
-        public int FPlayerNum;
-        public int FTrumpCardNum = GameController.C_Suit * GameController.C_Rank;
+        private int FPlayerNum;
+
+        private int FTrumpCardNum = GameController.C_Suit * GameController.C_Rank;
 
         /// <summary>
         /// プレイヤー数を受け取る
         /// </summary>
         /// <param name="vPlayerNum"></param>
-        public void GetPlayterNum(int vPlayerNum) => FPlayerNum = vPlayerNum;
+        private void GetPlayterNum(int vPlayerNum) => FPlayerNum = vPlayerNum;
 
         /// <summary>
         /// トランプを再描画
@@ -50,7 +51,7 @@ namespace Concentration {
         /// <param name="vCards"></param>
         public void RefreshCards(List<Card> vCards) {
             for (int i = 0; i < vCards.Count; i++) {
-                if (vCards[i].IsObverse == true) {
+                if (vCards[i].IsObverse) {
                     string wSuit = "♥";
                     if (vCards[i].Suit == 0) {
                         wSuit = "♠";
@@ -62,8 +63,11 @@ namespace Concentration {
                         wSuit = "♣";
                     }
                     this.FCardButtons[i].Text = $"{wSuit}{vCards[i].Rank}";
+                    this.FCardButtons[i].Enabled = false;
+
                 } else {
                     this.FCardButtons[i].Text = "";
+                    this.FCardButtons[i].Enabled = true;
                 }
             }
             this.flowLayoutPanel1.Refresh();
@@ -74,7 +78,7 @@ namespace Concentration {
         /// </summary>
         /// <param name="vTurn"></param>
         public void RefreshTurnPlayer(int vTurn) {
-            this.Teban.Text = FGameController.FPlayers.PlayersList[vTurn].Name;
+            this.Teban.Text = FGameController.Players.PlayersList[vTurn].Name;
             this.Teban.Refresh();
         }
 
@@ -88,14 +92,7 @@ namespace Concentration {
             this.FCardNumTextBoxes[vTurn].Refresh();
         }
 
-        /// <summary>
-        /// カードボタンを非活性化
-        /// </summary>
-        /// <param name="vCardButtonNum"></param>
-        public void EnableCardButton(int vCardButtonNum) => this.FCardButtons[vCardButtonNum].Enabled = false;
-
-
-        public Form1() {
+        public GameForm() {
             InitializeComponent();
             FGameController = new GameController(this);
         }
@@ -104,24 +101,36 @@ namespace Concentration {
 
         }
 
-        public void Button_Click(object sender, EventArgs e) {
+        /// <summary>
+        /// カードのボタンをクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, EventArgs e) {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
-            if (FGameController.FGame.GameEnd == true) {
-                if (FGameController.FWinPlayers.Count == 1) {
-                    MessageBox.Show($"{FGameController.FWinPlayers[0].Name}の勝ち!!");
+            if (FGameController.Game.IsGameEnd) {
+                if (FGameController.WinPlayers.Count == 1) {
+                    MessageBox.Show($"{FGameController.WinPlayers[0].Name}の勝ち!!");
                 }
-                if (FGameController.FWinPlayers.Count == 2) {
-                    MessageBox.Show($"{FGameController.FWinPlayers[0].Name}と{FGameController.FWinPlayers[1].Name}の勝ち!!");
+                if (FGameController.WinPlayers.Count == 2) {
+                    MessageBox.Show($"{FGameController.WinPlayers[0].Name}と{FGameController.WinPlayers[1].Name}の勝ち!!");
                 }
-                if (FGameController.FWinPlayers.Count == 3) {
-                    MessageBox.Show($"{FGameController.FWinPlayers[0].Name}と{FGameController.FWinPlayers[1].Name}と{FGameController.FWinPlayers[2].Name}の勝ち!!");
+                if (FGameController.WinPlayers.Count == 3) {
+                    MessageBox.Show($"{FGameController.WinPlayers[0].Name}と{FGameController.WinPlayers[1].Name}と{FGameController.WinPlayers[2].Name}の勝ち!!");
                 }
             }
         }
 
-        public void Winner_Show(object sender, EventArgs e) {
-            MessageBox.Show("テスト");
+        /// <summary>
+        /// シャッフルボタンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Shuffle_Button_Click(object sender, EventArgs e) {
+            FGameController.ShuffleDeck();
+            RefreshCards(FGameController.Trump.Deck);
+            this.Shuffle.Enabled = false;
         }
 
         private void Form1_Load(object sender, EventArgs e) {
@@ -156,7 +165,7 @@ namespace Concentration {
                 return;
             }
 
-            GetPlayterNum(FGameController.FPlayerNum);
+            GetPlayterNum(FGameController.PlayerNum);
 
             this.FPlayerNameLabels = new Label[FPlayerNum];
             this.FCardNumTextBoxes = new TextBox[FPlayerNum];
@@ -176,7 +185,7 @@ namespace Concentration {
                 this.FPlayerNameLabels[i].Name = "Player" + (i + 1);
                 this.FPlayerNameLabels[i].Size = new Size(101, 30);
                 this.FPlayerNameLabels[i].TabIndex = 0;
-                this.FPlayerNameLabels[i].Text = "プレイヤー" + (i + 1);
+                this.FPlayerNameLabels[i].Text = $"{FGameController.Players.PlayersList[i].Name}";
 
                 // 
                 // 取得カード数
@@ -203,7 +212,6 @@ namespace Concentration {
                 this.splitContainer1.Panel2.Controls.Add(this.FPlayerNameLabels[i]);
                 this.splitContainer1.Panel2.Controls.Add(this.FCardNumTextBoxes[i]);
                 this.splitContainer1.Panel2.Controls.Add(this.FUnitLabels[i]);
-
             }
         }
     }

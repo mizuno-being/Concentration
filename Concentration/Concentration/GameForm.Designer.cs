@@ -1,6 +1,6 @@
 ﻿
 namespace Concentration {
-    partial class Form1 {
+    partial class GameForm {
         /// <summary>
         /// 必要なデザイナー変数です。
         /// </summary>
@@ -92,7 +92,6 @@ namespace Concentration {
             // 
             // Shuffle
             // 
-            this.Shuffle.Enabled = false;
             this.Shuffle.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Shuffle.Location = new System.Drawing.Point(20, 536);
             this.Shuffle.Name = "Shuffle";
@@ -100,6 +99,7 @@ namespace Concentration {
             this.Shuffle.TabIndex = 3;
             this.Shuffle.Text = "シャッフル";
             this.Shuffle.UseVisualStyleBackColor = true;
+            this.Shuffle.Click += new System.EventHandler(this.Shuffle_Button_Click);
             // 
             // TebanText
             // 
