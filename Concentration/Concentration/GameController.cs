@@ -11,13 +11,32 @@ namespace Concentration {
     /// </summary>
     public class GameController {
 
-        public Game Game;
-        public Trump Trump;
-        public Players Players;
+        /// <summary>
+        /// Game
+        /// </summary>
+        public Game Game { get; private set; }
+
+        /// <summary>
+        /// Trump
+        /// </summary>
+        public Trump Trump { get; private set; }
+
+        /// <summary>
+        /// Players
+        /// </summary>
+        public Players Players { get; private set; }
+
+        /// <summary>
+        /// プレイヤーの人数
+        /// </summary>
+        public int PlayerNum { get; private set; }
+
+        /// <summary>
+        /// プレイヤーの名前
+        /// </summary>
+        public List<string> PlayerNames { get; private set; }
+
         private GameForm FGameForm;
-        public List<Player> WinPlayers;
-        public int PlayerNum;
-        public List<string> FPlayerNames;
 
         /// <summary>
         /// スートの数
@@ -34,52 +53,50 @@ namespace Concentration {
         /// </summary>
         public GameController(GameForm fForm) {
             FGameForm = fForm;
-            Game = new Game();
-            Trump = new Trump();
-            Players = new Players();
-            Trump.ClickCard = new List<int>();
-            WinPlayers = new List<Player>();
-            PlayerNum = new int();
-            PlayerNum = 4;
-            Players.Turn = 0;
-            Trump.MakeDeck(C_Suit, C_Rank);
+            this.Game = new Game();
+            this.Trump = new Trump();
+            this.Players = new Players();
+            this.PlayerNum = new int();
+            this.PlayerNum = 4;
+            this.Players.TurnPlayerNum = 0;
+            this.Trump.ClickCard = new List<int>();
+            this.Trump.MakeDeck(C_Suit, C_Rank);
             ShuffleDeck();
-            Players.MakePlayers(PlayerNum);
-            FPlayerNames = new List<string>(PlayerNum);
-            Players.SetPlayersName(FPlayerNames);
+            this.Players.MakePlayers(this.PlayerNum);
+            this.PlayerNames = new List<string>(this.PlayerNum);
+            this.Players.SetPlayersName(this.PlayerNames);
         }
 
         /// <summary>
         /// デッキをシャッフル
         /// </summary>
-        public void ShuffleDeck() => Trump.Shuffle();
+        public void ShuffleDeck() => this.Trump.Shuffle();
 
         /// <summary>
         /// カードをめくる
         /// </summary>
         public void OpenCard(int vCardTag) {
 
-            Trump.ClickCardCount(vCardTag);
-            Trump.Deck[vCardTag].IsObverse = true;
-            FGameForm.RefreshCards(Trump.Deck);
-            if (Trump.ClickCard.Count == 2) {
-                bool wCheckMatch = Game.IsMatchCards(Trump.Deck[Trump.ClickCard[0]], Trump.Deck[Trump.ClickCard[1]]);
-                if (wCheckMatch) {
-                    Players.PlusCardNum(Players.PlayersList[Players.Turn]);
-                    FGameForm.RefreshMatchCardsNum(Players.PlayersList[Players.Turn].OwnCards, Players.Turn);
-                    Game.JudgeGameEnd(Trump.Deck);
-                    if (Game.IsGameEnd) {
-                        Players.JudgeWinner();
+            this.Trump.ClickCard.Add(vCardTag);
+            this.Game.OpenCard(this.Trump.Deck[vCardTag]);
+            FGameForm.RefreshCards(this.Trump.Deck);
+            if (this.Trump.ClickCard.Count == 2) {
+                if (this.Game.IsMatchCards(this.Trump.Deck[this.Trump.ClickCard[0]], this.Trump.Deck[this.Trump.ClickCard[1]])) {
+                    this.Players.PlusCardNum(this.Players.PlayersList[this.Players.TurnPlayerNum]);
+                    FGameForm.RefreshMatchCardsNum(this.Players.PlayersList[this.Players.TurnPlayerNum].OwnCardCount, this.Players.TurnPlayerNum);
+                    this.Game.JudgeGameEnd(this.Trump.Deck);
+                    if (this.Game.IsGameEnd) {
+                        this.Players.JudgeWinner();
                     }
                 } else {
-                    Game.CloseCard(Trump.Deck[Trump.ClickCard[0]], Trump.Deck[Trump.ClickCard[1]]);
+                    this.Game.CloseCard(this.Trump.Deck[this.Trump.ClickCard[0]], this.Trump.Deck[this.Trump.ClickCard[1]]);
                     Thread.Sleep(600);
-                    Players.NextTurn(Players.Turn, PlayerNum);
-                    FGameForm.RefreshTurnPlayer(Players.Turn);
+                    this.Players.NextTurn(this.PlayerNum);
+                    FGameForm.RefreshTurnPlayer(this.Players.TurnPlayerNum);
                 }
-                Trump.ClickCard.Clear();
+                this.Trump.ClickCard.Clear();
             }
-            FGameForm.RefreshCards(Trump.Deck);
+            FGameForm.RefreshCards(this.Trump.Deck);
         }
         //reset
     }

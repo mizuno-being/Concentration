@@ -39,11 +39,6 @@ namespace Concentration {
         private int FTrumpCardNum = GameController.C_Suit * GameController.C_Rank;
 
         /// <summary>
-        /// プレイヤー数を受け取る
-        /// </summary>
-        private void GetPlayterNum(int vPlayerNum) => FPlayerNum = vPlayerNum;
-
-        /// <summary>
         /// トランプを再描画
         /// </summary>
         public void RefreshCards(List<Card> vCards) {
@@ -81,9 +76,9 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数を再描画
         /// </summary>
-        public void RefreshMatchCardsNum(int vMatchCardNum, int vTurn) {
-            this.FCardNumTextBoxes[vTurn].Text = $"{ vMatchCardNum}";
-            this.FCardNumTextBoxes[vTurn].Refresh();
+        public void RefreshMatchCardsNum(int vMatchCardCount, int vTurnPlayerNum) {
+            this.FCardNumTextBoxes[vTurnPlayerNum].Text = $"{vMatchCardCount}";
+            this.FCardNumTextBoxes[vTurnPlayerNum].Refresh();
         }
 
         public GameForm() {
@@ -98,14 +93,18 @@ namespace Concentration {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
             if (FGameController.Game.IsGameEnd) {
-                if (FGameController.WinPlayers.Count == 1) {
-                    MessageBox.Show($"{FGameController.WinPlayers[0].Name}の勝ち!!");
+                if (FGameController.Players.WinPlayers.Count == 1) {
+                    MessageBox.Show($"{FGameController.Players.WinPlayers[0].Name}の勝ち!!");
                 }
-                if (FGameController.WinPlayers.Count == 2) {
-                    MessageBox.Show($"{FGameController.WinPlayers[0].Name}と{FGameController.WinPlayers[1].Name}の勝ち!!");
+                if (FGameController.Players.WinPlayers.Count == 2) {
+                    if (FPlayerNum == 2) {
+                        MessageBox.Show($"引き分け!!");
+                    } else {
+                        MessageBox.Show($"{FGameController.Players.WinPlayers[0].Name}と{FGameController.Players.WinPlayers[1].Name}の勝ち!!");
+                    }
                 }
-                if (FGameController.WinPlayers.Count == 3) {
-                    MessageBox.Show($"{FGameController.WinPlayers[0].Name}と{FGameController.WinPlayers[1].Name}と{FGameController.WinPlayers[2].Name}の勝ち!!");
+                if (FGameController.Players.WinPlayers.Count == 3) {
+                    MessageBox.Show($"{FGameController.Players.WinPlayers[0].Name}と{FGameController.Players.WinPlayers[1].Name}と{FGameController.Players.WinPlayers[2].Name}の勝ち!!");
                 }
             }
         }
@@ -151,7 +150,7 @@ namespace Concentration {
                 return;
             }
 
-            GetPlayterNum(FGameController.PlayerNum);
+            FPlayerNum = FGameController.PlayerNum;
 
             this.FPlayerNameLabels = new Label[FPlayerNum];
             this.FCardNumTextBoxes = new TextBox[FPlayerNum];

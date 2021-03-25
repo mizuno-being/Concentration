@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 
 /// <summary>
 /// 神経衰弱
@@ -12,19 +11,19 @@ namespace Concentration {
     public class Game {
 
         /// <summary>
+        /// ゲーム終了フラグ
+        /// </summary>
+        public bool IsGameEnd { get; private set; }
+
+        /// <summary>
         /// 一致判定
         /// </summary>
-        public bool IsMatchCards(Card vFirstCard, Card vSecondCard) {
-            if (vFirstCard.Rank == vSecondCard.Rank) {
-                return true;
-            }
-            return false;
-        }
+        public bool IsMatchCards(Card vFirstCard, Card vSecondCard) => vFirstCard.Rank == vSecondCard.Rank;
 
         /// <summary>
         /// カードをめくる
         /// </summary>
-        public bool IsOpenCard(bool vObverse) => true;
+        public void OpenCard(Card vCard) => vCard.IsObverse = true;
 
         /// <summary>
         /// カードを裏返す
@@ -35,14 +34,8 @@ namespace Concentration {
         }
 
         /// <summary>
-        /// ゲーム終了フラグ
-        /// </summary>
-        public bool IsGameEnd { get; set; }
-
-        /// <summary>
         /// ゲーム終了判定
         /// </summary>
-        /// <param name="vDeck"></param>
         public void JudgeGameEnd(List<Card> vDeck) {
             if (vDeck.Exists(x => x.IsObverse == false) == false) {
                 this.IsGameEnd = true;

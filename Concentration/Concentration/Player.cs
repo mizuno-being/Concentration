@@ -21,6 +21,6 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数
         /// </summary>
-        public int OwnCards { get; set; }
+        public int OwnCardCount { get; set; }
     }
 }

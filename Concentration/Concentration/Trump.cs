@@ -14,7 +14,12 @@ namespace Concentration {
         /// <summary>
         /// カードの束
         /// </summary>
-        public List<Card> Deck { get; set; }
+        public List<Card> Deck { get; private set; }
+
+        /// <summary>
+        /// クリックされたカードの位置の記憶
+        /// </summary>
+        public List<int> ClickCard { get; set; }
 
         /// <summary>
         /// カード52枚でデッキ作成
@@ -42,16 +47,6 @@ namespace Concentration {
                 this.Deck[x] = z;
             }
         }
-
-        /// <summary>
-        /// クリックされたカードの位置の記憶
-        /// </summary>
-        public List<int> ClickCard { get; set; }
-
-        /// <summary>
-        /// クリックされたカードの位置を追加
-        /// </summary>
-        public void ClickCardCount(int vClickCard) => this.ClickCard.Add(vClickCard);
     }
 }
 

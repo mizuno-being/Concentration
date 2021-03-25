@@ -14,7 +14,17 @@ namespace Concentration {
         /// <summary>
         /// ゲームに参加しているプレイヤー
         /// </summary>
-        public List<Player> PlayersList { get; set; }
+        public List<Player> PlayersList { get; private set; }
+
+        /// <summary>
+        /// 勝者リスト
+        /// </summary>
+        public List<Player> WinPlayers { get; set; }
+
+        /// <summary>
+        /// 誰の手番か
+        /// </summary>
+        public int TurnPlayerNum { get; set; }
 
         /// <summary>
         /// プレイヤー数だけPlayerインスタンスを作成
@@ -22,7 +32,7 @@ namespace Concentration {
         public void MakePlayers(int vPlayerNum) {
             this.PlayersList = new List<Player>();
             for (int i = 1; i <= vPlayerNum; i++) {
-                this.PlayersList.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCards = 0 });
+                this.PlayersList.Add(new Player { Id = i, Name = "プレイヤー" + i, OwnCardCount = 0 });
             }
         }
 
@@ -39,54 +49,23 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数加算
         /// </summary>
-        public void PlusCardNum(Player vPlayer) => vPlayer.OwnCards += 2;
-
-        /// <summary>
-        /// 誰の手番か
-        /// </summary>
-        public int Turn { get; set; }
+        public void PlusCardNum(Player vPlayer) => vPlayer.OwnCardCount += 2;
 
         /// <summary>
         /// 手番を次に回す
         /// </summary>
-        public void NextTurn(int vTurn, int vPlayerNum) {
-            if (vTurn == vPlayerNum - 1) {
-                this.Turn = 0;
+        public void NextTurn(int vPlayerNum) {
+            if (this.TurnPlayerNum == vPlayerNum - 1) {
+                this.TurnPlayerNum = 0;
             }
-            if (vTurn < vPlayerNum - 1) {
-                this.Turn = vTurn + 1;
+            if (this.TurnPlayerNum < vPlayerNum - 1) {
+                this.TurnPlayerNum++;
             }
         }
 
         /// <summary>
         /// 勝者判定
         /// </summary>
-        public List<Player> JudgeWinner() {
-            List<Player> wWinners = new List<Player>();
-            List<Player> wSortedOwnCards = this.PlayersList.OrderByDescending(x => x.OwnCards).ToList();
-            if (wSortedOwnCards[0].OwnCards > wSortedOwnCards[1].OwnCards) {
-                wWinners.Add(wSortedOwnCards[0]);
-                return wWinners;
-            }
-            if (wSortedOwnCards[0].OwnCards == wSortedOwnCards[1].OwnCards) {
-                if (wSortedOwnCards.Count == 2) {
-                    wWinners.Add(wSortedOwnCards[0]);
-                    wWinners.Add(wSortedOwnCards[1]);
-                    return wWinners;
-                }
-                if (wSortedOwnCards[1].OwnCards > wSortedOwnCards[2].OwnCards) {
-                    wWinners.Add(wSortedOwnCards[0]);
-                    wWinners.Add(wSortedOwnCards[1]);
-                    return wWinners;
-                }
-            }
-            if (wSortedOwnCards[0].OwnCards == wSortedOwnCards[1].OwnCards && wSortedOwnCards[1].OwnCards == wSortedOwnCards[2].OwnCards) {
-                wWinners.Add(wSortedOwnCards[0]);
-                wWinners.Add(wSortedOwnCards[1]);
-                wWinners.Add(wSortedOwnCards[2]);
-                return wWinners;
-            }
-            return wWinners;
-        }
+        public void JudgeWinner() => this.WinPlayers = this.PlayersList.Where(x => x.OwnCardCount == this.PlayersList.Max(y => y.OwnCardCount)).ToList();
     }
 }
