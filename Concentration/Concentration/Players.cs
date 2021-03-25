@@ -17,9 +17,9 @@ namespace Concentration {
         public List<Player> PlayersList { get; private set; }
 
         /// <summary>
-        /// 勝者リスト
+        /// 勝者判定
         /// </summary>
-        public List<Player> WinPlayers { get; set; }
+        public List<Player> SetWinners => this.PlayersList.GroupBy(x => x.OwnCardCount).OrderByDescending(x => x.Key).First().ToList();
 
         /// <summary>
         /// 誰の手番か
@@ -49,7 +49,7 @@ namespace Concentration {
         /// <summary>
         /// 取得枚数加算
         /// </summary>
-        public void PlusCardNum(Player vPlayer) => vPlayer.OwnCardCount += 2;
+        public void PlusCardNum(int vTurnPlayerNum) => this.PlayersList[vTurnPlayerNum].OwnCardCount += 2;
 
         /// <summary>
         /// 手番を次に回す
@@ -62,10 +62,5 @@ namespace Concentration {
                 this.TurnPlayerNum++;
             }
         }
-
-        /// <summary>
-        /// 勝者判定
-        /// </summary>
-        public void JudgeWinner() => this.WinPlayers = this.PlayersList.Where(x => x.OwnCardCount == this.PlayersList.Max(y => y.OwnCardCount)).ToList();
     }
 }

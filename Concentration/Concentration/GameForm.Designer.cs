@@ -129,7 +129,7 @@ namespace Concentration {
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
             this.Text = "Concentration-シンケイスイジャク-";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.GameForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();

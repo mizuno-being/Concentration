@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 神経衰弱
@@ -36,8 +37,8 @@ namespace Concentration {
         /// <summary>
         /// ゲーム終了判定
         /// </summary>
-        public void JudgeGameEnd(List<Card> vDeck) {
-            if (vDeck.Exists(x => x.IsObverse == false) == false) {
+        public void SetGameEnd(List<Card> vDeck) {
+            if (vDeck.All(x=>x.IsObverse)) {
                 this.IsGameEnd = true;
             } else {
                 this.IsGameEnd = false;

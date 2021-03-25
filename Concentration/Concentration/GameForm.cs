@@ -7,6 +7,7 @@ using System.Windows.Forms;
 /// 神経衰弱
 /// </summary>
 namespace Concentration {
+
     /// <summary>
     /// 神経衰弱を行う画面
     /// </summary>
@@ -33,6 +34,11 @@ namespace Concentration {
         /// 単位(枚)を表示するラベル
         /// </summary>
         private Label[] FUnitLabels;
+
+        /// <summary>
+        /// ゲーム終了時の勝利メッセージ
+        /// </summary>
+        public string WinMessage { get; set; }
 
         private int FPlayerNum;
 
@@ -81,6 +87,9 @@ namespace Concentration {
             this.FCardNumTextBoxes[vTurnPlayerNum].Refresh();
         }
 
+        /// <summary>
+        /// GameForm
+        /// </summary>
         public GameForm() {
             InitializeComponent();
             FGameController = new GameController(this);
@@ -93,20 +102,9 @@ namespace Concentration {
             int wChoiceCardNum = (int)((Button)sender).Tag;
             FGameController.OpenCard(wChoiceCardNum);
             if (FGameController.Game.IsGameEnd) {
-                if (FGameController.Players.WinPlayers.Count == 1) {
-                    MessageBox.Show($"{FGameController.Players.WinPlayers[0].Name}の勝ち!!");
-                }
-                if (FGameController.Players.WinPlayers.Count == 2) {
-                    if (FPlayerNum == 2) {
-                        MessageBox.Show($"引き分け!!");
-                    } else {
-                        MessageBox.Show($"{FGameController.Players.WinPlayers[0].Name}と{FGameController.Players.WinPlayers[1].Name}の勝ち!!");
-                    }
-                }
-                if (FGameController.Players.WinPlayers.Count == 3) {
-                    MessageBox.Show($"{FGameController.Players.WinPlayers[0].Name}と{FGameController.Players.WinPlayers[1].Name}と{FGameController.Players.WinPlayers[2].Name}の勝ち!!");
-                }
+                MessageBox.Show(this.WinMessage);
             }
+
         }
 
         /// <summary>
@@ -118,7 +116,7 @@ namespace Concentration {
             this.Shuffle.Enabled = false;
         }
 
-        private void Form1_Load(object sender, EventArgs e) {
+        private void GameForm_Load(object sender, EventArgs e) {
 
             ///トランプを52枚表示
             if (this.FCardButtons != null) {
