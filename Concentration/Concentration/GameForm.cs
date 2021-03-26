@@ -62,7 +62,6 @@ namespace Concentration {
                     }
                     this.FCardButtons[i].Text = $"{wSuit}{vCards[i].Rank}";
                     this.FCardButtons[i].Enabled = false;
-
                 } else {
                     this.FCardButtons[i].Text = "";
                     this.FCardButtons[i].Enabled = true;
@@ -136,7 +135,6 @@ namespace Concentration {
                 this.FCardButtons[i].Size = new Size(68, 100);
                 this.FCardButtons[i].TabIndex = 0;
                 this.FCardButtons[i].Text = "";
-                //this.FCardButtons[i].Text = char.ConvertFromUtf32(127136);
                 this.FCardButtons[i].TextAlign = ContentAlignment.TopRight;
                 this.FCardButtons[i].UseVisualStyleBackColor = false;
                 this.FCardButtons[i].Click += Button_Click;

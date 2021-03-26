@@ -72,6 +72,7 @@ namespace Concentration {
             // 
             // Restart
             // 
+            this.Restart.Enabled = false;
             this.Restart.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.Restart.Location = new System.Drawing.Point(20, 694);
             this.Restart.Name = "Restart";
@@ -82,6 +83,7 @@ namespace Concentration {
             // 
             // HowToPlay
             // 
+            this.HowToPlay.Enabled = false;
             this.HowToPlay.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.HowToPlay.Location = new System.Drawing.Point(20, 615);
             this.HowToPlay.Name = "HowToPlay";
@@ -121,13 +123,13 @@ namespace Concentration {
             this.Teban.TabIndex = 1;
             this.Teban.Text = "プレイヤー1";
             // 
-            // Form1
+            // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 761);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form1";
+            this.Name = "GameForm";
             this.Text = "Concentration-シンケイスイジャク-";
             this.Load += new System.EventHandler(this.GameForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);

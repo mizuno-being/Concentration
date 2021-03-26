@@ -41,12 +41,12 @@ namespace Concentration {
         /// <summary>
         /// スートの数
         /// </summary>
-        public const int C_Suit = 2;
+        public const int C_Suit = 4;
 
         /// <summary>
         /// 数字の上限
         /// </summary>
-        public const int C_Rank = 8;
+        public const int C_Rank = 13;
 
         /// <summary>
         /// スタート時呼び出し
@@ -60,7 +60,7 @@ namespace Concentration {
             this.Players.TurnPlayerNum = 0;
             this.Trump.ClickCard = new List<int>();
             this.Trump.MakeDeck(C_Suit, C_Rank);
-            //ShuffleDeck();
+            ShuffleDeck();
             this.Players.MakePlayers(this.PlayerNum);
             this.PlayerNames = new List<string>(this.PlayerNum);
             this.Players.SetPlayersName(this.PlayerNames);
@@ -85,23 +85,19 @@ namespace Concentration {
                     FGameForm.RefreshMatchCardsNum(this.Players.PlayersList[this.Players.TurnPlayerNum].OwnCardCount, this.Players.TurnPlayerNum);
                     this.Game.SetGameEnd(this.Trump.Deck);
                     if (this.Game.IsGameEnd) {
-                        
-                        string wWinMessage = $"{this.Players.SetWinners[0].Name}の勝ち!!";
-                        if (this.Players.SetWinners.Count == 2) {
-                            if (this.PlayerNum == 2) {
-                                wWinMessage = $"引き分け!!";
-                            } else {
-                                wWinMessage = $"{this.Players.SetWinners[0].Name}と{this.Players.SetWinners[1].Name}の勝ち!!";
-                            }
-                        }
-                        if (this.Players.SetWinners.Count == 3) {
-                            wWinMessage = $"{this.Players.SetWinners[0].Name}と{this.Players.SetWinners[1].Name}と{this.Players.SetWinners[2].Name}の勝ち!!";
-                        }
+                        List<Player> wWinnerList = this.Players.Winners;
+                        string wWinMessage = "";
+                        if (wWinnerList.Count == this.PlayerNum) {
+                            wWinMessage = $"引き分け!!";
+                        } else {
+                            wWinnerList.ForEach(x => wWinMessage += $"{x.Name}\n");
+                            wWinMessage += $"の勝ち!!";
+                                }
                         FGameForm.WinMessage = wWinMessage;
                     }
                 } else {
-                    this.Game.CloseCard(this.Trump.Deck[this.Trump.ClickCard[0]], this.Trump.Deck[this.Trump.ClickCard[1]]);
                     Thread.Sleep(600);
+                    this.Game.CloseCard(this.Trump.Deck[this.Trump.ClickCard[0]], this.Trump.Deck[this.Trump.ClickCard[1]]);
                     this.Players.NextTurn(this.PlayerNum);
                     FGameForm.RefreshTurnPlayer(this.Players.TurnPlayerNum);
                 }

@@ -19,7 +19,7 @@ namespace Concentration {
         /// <summary>
         /// 勝者判定
         /// </summary>
-        public List<Player> SetWinners => this.PlayersList.GroupBy(x => x.OwnCardCount).OrderByDescending(x => x.Key).First().ToList();
+        public List<Player> Winners => this.PlayersList.GroupBy(x => x.OwnCardCount).OrderByDescending(x => x.Key).First().ToList();
 
         /// <summary>
         /// 誰の手番か
