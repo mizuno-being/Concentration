@@ -57,8 +57,7 @@ namespace Concentration {
         public void NextTurn(int vPlayerNum) {
             if (this.TurnPlayerNum == vPlayerNum - 1) {
                 this.TurnPlayerNum = 0;
-            }
-            if (this.TurnPlayerNum < vPlayerNum - 1) {
+            } else if (this.TurnPlayerNum < vPlayerNum - 1) {
                 this.TurnPlayerNum++;
             }
         }
