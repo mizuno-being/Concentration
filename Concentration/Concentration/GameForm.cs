@@ -103,7 +103,6 @@ namespace Concentration {
             if (FGameController.Game.IsGameEnd) {
                 MessageBox.Show(this.WinMessage);
             }
-
         }
 
         /// <summary>
@@ -126,7 +125,6 @@ namespace Concentration {
 
             for (int i = 0; i < this.FCardButtons.Length; i++) {
                 this.FCardButtons[i] = new Button();
-
                 this.FCardButtons[i].BackColor = SystemColors.ButtonShadow;
                 this.FCardButtons[i].Font = new Font("Yu Gothic UI", 25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
                 this.FCardButtons[i].Location = new Point(77, 3);
@@ -162,7 +160,7 @@ namespace Concentration {
                 // 
                 this.FPlayerNameLabels[i].AutoSize = true;
                 this.FPlayerNameLabels[i].Font = new Font("Yu Gothic UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-                this.FPlayerNameLabels[i].Location = new Point(20, 135 + 100 * i);
+                this.FPlayerNameLabels[i].Location = new Point(20, 135 + 90 * i);
                 this.FPlayerNameLabels[i].Name = "Player" + (i + 1);
                 this.FPlayerNameLabels[i].Size = new Size(101, 30);
                 this.FPlayerNameLabels[i].TabIndex = 0;
@@ -172,11 +170,12 @@ namespace Concentration {
                 // 取得カード数
                 // 
                 this.FCardNumTextBoxes[i].Font = new Font("Yu Gothic UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-                this.FCardNumTextBoxes[i].Location = new Point(102, 179 + 100 * i);
+                this.FCardNumTextBoxes[i].Location = new Point(102, 179 + 90 * i);
                 this.FCardNumTextBoxes[i].Name = "CardNum";
                 this.FCardNumTextBoxes[i].ReadOnly = true;
                 this.FCardNumTextBoxes[i].Size = new Size(37, 33);
                 this.FCardNumTextBoxes[i].TabIndex = 2;
+                this.FCardNumTextBoxes[i].TabStop = false;
                 this.FCardNumTextBoxes[i].Text = "0";
 
                 // 
@@ -184,7 +183,7 @@ namespace Concentration {
                 // 
                 this.FUnitLabels[i].AutoSize = true;
                 this.FUnitLabels[i].Font = new Font("Yu Gothic UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(128)));
-                this.FUnitLabels[i].Location = new Point(140, 187 + 100 * i);
+                this.FUnitLabels[i].Location = new Point(140, 187 + 90 * i);
                 this.FUnitLabels[i].Name = "Unit";
                 this.FUnitLabels[i].Size = new Size(31, 25);
                 this.FUnitLabels[i].TabIndex = 1;

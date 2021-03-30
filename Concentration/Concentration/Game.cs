@@ -38,7 +38,7 @@ namespace Concentration {
         /// ゲーム終了判定
         /// </summary>
         public void SetGameEnd(List<Card> vDeck) {
-            if (vDeck.All(x=>x.IsObverse)) {
+            if (vDeck.All(x => x.IsObverse)) {
                 this.IsGameEnd = true;
             } else {
                 this.IsGameEnd = false;

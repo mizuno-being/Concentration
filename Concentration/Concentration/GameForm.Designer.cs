@@ -123,6 +123,7 @@ namespace Concentration {
             this.Teban.ReadOnly = true;
             this.Teban.Size = new System.Drawing.Size(170, 39);
             this.Teban.TabIndex = 1;
+            this.Teban.TabStop = false;
             this.Teban.Text = "プレイヤー1";
             // 
             // GameForm

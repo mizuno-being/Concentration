@@ -17,9 +17,9 @@ namespace Concentration {
         public List<Card> Deck { get; private set; }
 
         /// <summary>
-        /// クリックされたカードの位置の記憶
+        /// クリックされたカードの記憶
         /// </summary>
-        public List<int> ClickCard { get; set; }
+        public List<Card> ClickCard { get; set; }
 
         /// <summary>
         /// カード52枚でデッキ作成
