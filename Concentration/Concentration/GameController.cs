@@ -94,7 +94,7 @@ namespace Concentration {
                     }
                 } else {
                     this.Game.CloseCard(this.Trump.ClickCard[0], this.Trump.ClickCard[1]);
-                    Thread.Sleep(600);
+                    Thread.Sleep(800);
                     this.Players.NextTurn(this.PlayerNum);
                     FGameForm.RefreshTurnPlayer(this.Players.TurnPlayerNum);
                     FGameForm.RefreshCards(this.Trump.Deck);

@@ -47,7 +47,7 @@ namespace Concentration {
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(15);
             this.flowLayoutPanel1.Size = new System.Drawing.Size(728, 759);
-            this.flowLayoutPanel1.TabIndex = 1;
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // splitContainer1
             // 
@@ -122,7 +122,7 @@ namespace Concentration {
             this.Teban.Name = "Teban";
             this.Teban.ReadOnly = true;
             this.Teban.Size = new System.Drawing.Size(170, 39);
-            this.Teban.TabIndex = 1;
+            this.Teban.TabIndex = 0;
             this.Teban.TabStop = false;
             this.Teban.Text = "プレイヤー1";
             // 
